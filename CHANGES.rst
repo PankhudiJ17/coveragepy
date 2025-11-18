@@ -20,15 +20,19 @@ upgrading your version of coverage.py.
     ..  Version 9.8.1 — 2027-07-27
     ..  --------------------------
 
-Unreleased
-----------
+.. start-releases
+
+.. _changes_7-12-0:
+
+Version 7.12.0 — 2025-11-18
+---------------------------
 
 - The HTML report now shows separate coverage totals for statements and
   branches, as well as the usual combined coverage percentage. Thanks to Ryuta
   Otsuka for the `discussion <issue 2081_>`_ and the `implementation
   <pull 2085_>`_.
 
-- The JSON report now include separate coverage totals for statements and
+- The JSON report now includes separate coverage totals for statements and
   branches, thanks to `Ryuta Otsuka <pull 2090_>`_.
 
 - Fix: ``except*`` clauses were not handled properly under the "sysmon"
@@ -38,13 +42,13 @@ Unreleased
 - Fix: we now defend against aggressive mocking of ``open()`` that could cause
   errors inside coverage.py.  An example of a failure is in `issue 2083`_.
 
-- A small tweak to the HTML report: file paths now use thin spaces around
-  slashes to make them easier to read.
-
 - Fix: in unusual cases where a test suite intentionally exhausts the system's
   file descriptors to test handling errors in ``open()``, coverage.py would
   fail when trying to open source files, as described in `issue 2091`_.  This
   is now fixed.
+
+- A small tweak to the HTML report: file paths now use thin spaces around
+  slashes to make them easier to read.
 
 .. _issue 2081: https://github.com/coveragepy/coveragepy/issues/2081
 .. _issue 2083: https://github.com/coveragepy/coveragepy/issues/2083
@@ -53,8 +57,6 @@ Unreleased
 .. _pull 2090: https://github.com/coveragepy/coveragepy/pull/2090
 .. _issue 2091: https://github.com/coveragepy/coveragepy/issues/2091
 
-
-.. start-releases
 
 .. _changes_7-11-3:
 
