@@ -452,7 +452,6 @@ def do_cheats():
 
     repo = "coveragepy/coveragepy"
     github = f"https://github.com/{repo}"
-    egg = "egg=coverage==0.0"  # to force a re-install
     print(
         f"https://coverage.readthedocs.io/en/{facts.ver}/changes.html#changes-{facts.anchor}",
     )
@@ -465,10 +464,10 @@ def do_cheats():
 
     print("\n## To install this code:")
     if facts.branch == "main":
-        print(f"python3 -m pip install git+{github}#{egg}")
+        print(f"python3 -m pip install git+{github}")
     else:
-        print(f"python3 -m pip install git+{github}@{facts.branch}#{egg}")
-    print(f"python3 -m pip install git+{github}@{facts.sha[:20]}#{egg}")
+        print(f"python3 -m pip install git+{github}@{facts.branch}")
+    print(f"python3 -m pip install git+{github}@{facts.sha[:20]}")
 
     print("\n## To read this code on GitHub:")
     print(f"https://github.com/coveragepy/coveragepy/commit/{facts.sha}")
