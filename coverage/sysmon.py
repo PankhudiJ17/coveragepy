@@ -326,6 +326,10 @@ class SysMonitor(Tracer):
         if self.stats is not None:
             self.stats["starts"] += 1
 
+        if code.co_name == "__annotate__":
+            # Type annotation code objects don't execute, ignore them.
+            return DISABLE
+
         # Entering a new frame.  Decide if we should trace in this file.
         code_info = self.code_infos.get(id(code))
         tracing_code: bool | None = None
