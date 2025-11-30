@@ -288,9 +288,6 @@ class Coverage(TConfigurable):
         self._no_warn_slugs: set[str] = set()
         self._messages = messages
 
-        # If we're invoked from a .pth file, we shouldn't try to make another one.
-        self._make_pth_file = True
-
         # A record of all the warnings that have been issued.
         self._warnings: list[str] = []
 
@@ -719,7 +716,7 @@ class Coverage(TConfigurable):
         if self._auto_load:
             self.load()
 
-        apply_patches(self, self.config, self._debug, make_pth_file=self._make_pth_file)
+        apply_patches(self, self.config, self._debug)
 
         self._collector.start()
         self._started = True
@@ -1429,12 +1426,21 @@ if int(os.getenv("COVERAGE_DEBUG_CALLS", 0)):  # pragma: debugging
     )(Coverage)
 
 
-def process_startup(*, force: bool = False) -> Coverage | None:
+def process_startup(
+    *,
+    force: bool = False,
+    slug: str = "default",  # pylint: disable=unused-argument
+) -> Coverage | None:
     """Call this at Python start-up to perhaps measure coverage.
 
-    If the environment variable COVERAGE_PROCESS_START is defined, coverage
-    measurement is started.  The value of the variable is the config file
-    to use.
+    Coverage is started if one of these environment variables is defined:
+
+    - COVERAGE_PROCESS_START: the config file to use.
+    - COVERAGE_PROCESS_CONFIG: the config data to use, a string produced by
+      CoverageConfig.serialize, prefixed by ":data:".
+
+    If one of these is defined, it's used to get the coverage configuration,
+    and coverage is started.
 
     For details, see https://coverage.readthedocs.io/en/latest/subprocess.html.
 
@@ -1442,6 +1448,29 @@ def process_startup(*, force: bool = False) -> Coverage | None:
     not started by this call.
 
     """
+    # This function can be called more than once in a process, for a few
+    # reasons.
+    #
+    # 1) We install a .pth file in multiple places reported by the site module,
+    #    so this function can be called more than once even in simple
+    #    situations.
+    #
+    # 2) In some virtualenv configurations the same directory is visible twice
+    #    in sys.path.  This means that the .pth file will be found twice and
+    #    executed twice, executing this function twice.
+    #    https://github.com/coveragepy/coveragepy/issues/340 has more details.
+    #
+    # We set a global flag (an attribute on this function) to indicate that
+    # coverage.py has already been started, so we can avoid starting it twice.
+
+    if not force and hasattr(process_startup, "coverage"):
+        # We've annotated this function before, so we must have already
+        # auto-started coverage.py in this process.  Nothing to do.
+        return None
+
+    # Now check for the environment variables that request coverage. If they
+    # aren't set, do nothing.
+
     config_data = os.getenv("COVERAGE_PROCESS_CONFIG")
     cps = os.getenv("COVERAGE_PROCESS_START")
     if config_data is not None:
@@ -1452,27 +1481,12 @@ def process_startup(*, force: bool = False) -> Coverage | None:
         # No request for coverage, nothing to do.
         return None
 
-    # This function can be called more than once in a process. This happens
-    # because some virtualenv configurations make the same directory visible
-    # twice in sys.path.  This means that the .pth file will be found twice,
-    # and executed twice, executing this function twice.  We set a global
-    # flag (an attribute on this function) to indicate that coverage.py has
-    # already been started, so we can avoid doing it twice.
-    #
-    # https://github.com/coveragepy/coveragepy/issues/340 has more details.
-
-    if not force and hasattr(process_startup, "coverage"):
-        # We've annotated this function before, so we must have already
-        # auto-started coverage.py in this process.  Nothing to do.
-        return None
-
     cov = Coverage(config_file=config_file)
     process_startup.coverage = cov  # type: ignore[attr-defined]
     cov._warn_no_data = False
     cov._warn_unimported_source = False
     cov._warn_preimported_source = False
     cov._auto_save = True
-    cov._make_pth_file = False
     cov.start()
 
     return cov
@@ -1482,7 +1496,7 @@ def _after_fork_in_child() -> None:
     """Used by patch=fork in the child process to restart coverage."""
     if cov := Coverage.current():
         cov.stop()
-    process_startup(force=True)
+    process_startup(force=True, slug="fork")
 
 
 def _prevent_sub_process_measurement() -> None:
