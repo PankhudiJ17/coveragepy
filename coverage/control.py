@@ -12,7 +12,6 @@ import datetime
 import functools
 import os
 import os.path
-import platform
 import signal
 import sys
 import threading
@@ -1362,6 +1361,9 @@ class Coverage(TConfigurable):
     def sys_info(self) -> Iterable[tuple[str, Any]]:
         """Return a list of (key, value) pairs showing internal information."""
 
+        import glob
+        import platform
+        import site
         import coverage as covmod
 
         self._init()
@@ -1376,6 +1378,10 @@ class Coverage(TConfigurable):
                     entry += " (disabled)"
                 entries.append(entry)
             return entries
+
+        pth_files = []
+        for spdir in site.getsitepackages():
+            pth_files.extend(glob.glob(f"{spdir}/*cov*.pth"))
 
         info = [
             ("coverage_version", covmod.__version__),
@@ -1399,6 +1405,7 @@ class Coverage(TConfigurable):
             ("build", platform.python_build()),
             ("gil_enabled", getattr(sys, "_is_gil_enabled", lambda: True)()),
             ("executable", sys.executable),
+            ("pth_files", pth_files),
             ("def_encoding", sys.getdefaultencoding()),
             ("fs_encoding", sys.getfilesystemencoding()),
             ("pid", os.getpid()),
