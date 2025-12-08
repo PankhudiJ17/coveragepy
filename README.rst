@@ -35,27 +35,6 @@ Documentation is on `Read the Docs`_.  Code repository and issue tracker are on
 .. _Read the Docs: https://coverage.readthedocs.io/
 .. _GitHub: https://github.com/coveragepy/coveragepy
 
-**New in 7.x:**
-``[run] patch`` setting;
-``--save-signal`` option;
-``[run] core`` setting;
-``[run] source_dirs`` setting;
-``Coverage.branch_stats()``;
-multi-line exclusion patterns;
-function/class reporting;
-experimental support for sys.monitoring;
-dropped support for Python up to 3.9;
-added ``Coverage.collect()`` context manager;
-improved data combining;
-``[run] exclude_also`` setting;
-``report --format=``;
-type annotations.
-
-**New in 6.x:**
-dropped support for Python 2.7, 3.5, and 3.6;
-write data on SIGTERM;
-added support for 3.10 match/case statements.
-
 
 For Enterprise
 --------------
