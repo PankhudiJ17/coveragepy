@@ -13,9 +13,10 @@ import os.path
 import sys
 import threading
 import traceback
+from collections.abc import Callable
 from dataclasses import dataclass
 from types import CodeType
-from typing import Any, Callable, NewType, Optional, cast
+from typing import Any, NewType, Optional, cast
 
 from coverage import env
 from coverage.bytecode import TBranchTrails, always_jumps, branch_trails

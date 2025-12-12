@@ -15,8 +15,8 @@ import shutil
 import sys
 import textwrap
 
-from typing import cast, Callable
-from collections.abc import Iterable
+from collections.abc import Callable, Iterable
+from typing import cast
 
 import pytest
 

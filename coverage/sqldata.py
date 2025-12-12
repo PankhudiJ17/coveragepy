@@ -20,8 +20,8 @@ import textwrap
 import threading
 import uuid
 import zlib
-from collections.abc import Collection, Mapping, Sequence
-from typing import Any, Callable, cast
+from collections.abc import Callable, Collection, Mapping, Sequence
+from typing import Any, cast
 
 from coverage.debug import NoDebugging, auto_repr, file_summary
 from coverage.exceptions import CoverageException, DataError

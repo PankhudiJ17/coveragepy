@@ -6,8 +6,8 @@
 from __future__ import annotations
 
 import sys
-from collections.abc import Iterable
-from typing import IO, TYPE_CHECKING, Callable, Protocol
+from collections.abc import Callable, Iterable
+from typing import IO, TYPE_CHECKING, Protocol
 
 from coverage.exceptions import NoDataError, NotPython
 from coverage.files import GlobMatcher, prep_patterns

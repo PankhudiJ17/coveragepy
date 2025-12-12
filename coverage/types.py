@@ -9,9 +9,9 @@ from __future__ import annotations
 
 import os
 import pathlib
-from collections.abc import Iterable, Mapping
+from collections.abc import Callable, Iterable, Mapping
 from types import FrameType, ModuleType
-from typing import TYPE_CHECKING, Any, Callable, Optional, Protocol
+from typing import TYPE_CHECKING, Any, Optional, Protocol
 
 if TYPE_CHECKING:
     from coverage.plugin import FileTracer

@@ -9,9 +9,9 @@ import contextlib
 import functools
 import os
 import sys
-from collections.abc import Mapping
+from collections.abc import Callable, Mapping
 from types import FrameType
-from typing import Any, Callable, TypeVar, cast
+from typing import Any, TypeVar, cast
 
 from coverage import env
 from coverage.core import Core

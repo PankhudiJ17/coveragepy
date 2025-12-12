@@ -12,8 +12,7 @@ import os.path
 import posixpath
 import re
 import sys
-from collections.abc import Iterable
-from typing import Callable
+from collections.abc import Callable, Iterable
 
 from coverage import env
 from coverage.exceptions import ConfigError

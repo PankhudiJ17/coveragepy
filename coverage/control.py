@@ -17,9 +17,9 @@ import sys
 import threading
 import time
 import warnings
-from collections.abc import Iterable, Iterator
+from collections.abc import Callable, Iterable, Iterator
 from types import FrameType
-from typing import IO, Any, Callable, cast
+from typing import IO, Any, cast
 
 from coverage import env
 from coverage.annotate import AnnotateReporter

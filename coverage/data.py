@@ -16,8 +16,8 @@ import functools
 import glob
 import hashlib
 import os.path
-from collections.abc import Iterable
-from typing import Callable, Literal
+from collections.abc import Callable, Iterable
+from typing import Literal
 
 from coverage.exceptions import CoverageException, NoDataError
 from coverage.files import PathAliases
