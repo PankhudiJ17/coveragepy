@@ -48,7 +48,6 @@ The HTML report gives information about which lines had missing branches. Lines
 that were missing some branches are shown in yellow, with an annotation at the
 far right showing branch destination line numbers that were not exercised.
 
-
 The XML and JSON reports produced by ``coverage xml`` and ``coverage json``
 also include branch information, including separate statement and branch
 coverage percentages.
@@ -67,6 +66,7 @@ Thanks, Titus!
 
 __ http://ivory.idyll.org/blog
 
+
 Excluding code
 --------------
 
@@ -83,6 +83,7 @@ as a branch if one of its choices is excluded::
 
 Because the ``else`` clause is excluded, the ``if`` only has one possible next
 line, so it isn't considered a branch at all.
+
 
 Structurally partial branches
 -----------------------------
@@ -116,7 +117,7 @@ pragma indicates that the branch is known to be partial, and the line is not
 flagged.
 
 Generator expressions
-=====================
+.....................
 
 Generator expressions may also report partial branch coverage. Consider the
 following example::
@@ -128,34 +129,37 @@ generator did not iterate until ``StopIteration`` is raised, the indication
 that the loop is complete. This is another case
 where adding ``# pragma: no branch`` may be desirable.
 
-Explanations and examples of missing branches
-=============================================
 
-This section shows common examples of missing branches in Python code and
-explains how coverage.py reports them.
+.. _branch_explain:
+
+Examples of missing branches
+----------------------------
+
+This section shows examples of missing branches in Python code and explains how
+coverage.py reports them.
+
 
 ``for`` loop example
---------------------
+....................
 
 Example::
 
-    1: items = [1]
-    2: for x in items:
-    3:     print(x)
-    4:     if x:
-    5:         print("x is true")
-    6: print("done")
+    items = [1] # or empty, see the explanations
+    for x in items:
+        print(x)
+        if x:
+            print("x is true")
+    print("done")
+
+Here we have these possible branches:
+
+* ``2 -> 3`` loop body executed
+* ``2 -> 6`` loop exit
+* ``4 -> 5`` if True
+* ``4 -> 2`` if False, backward branch to top of loop
 
 
-Possible branches:
-
-* ``2 -> 3`` (loop body executed)
-* ``2 -> 6`` (exit)
-* ``4 -> 5`` (if True)
-* ``4 -> 2`` (if False, backward branch)
-
-
-Case 1 — ``items`` is empty::
+Case 1: ``items`` is empty::
 
     Missing:
     3-5
@@ -164,71 +168,52 @@ In this case, the loop body is never executed. Coverage reports the
 loop body lines as missing, but does not report missing branches,
 because the branching lines inside the loop are never executed.
 
-Case 2 — ``items = [1]``::
+Case 2: ``items = [1]``::
 
     Missing:
     4->2
 
+Here, the loop body is executed, but the ``if`` statement on line 4 is always
+true, so it always executes line 5. If the ``if`` condition were false, it
+would jump from 4 to 2 to start the next iteration of the loop, but this never
+happens, so coverage reports ``4->2`` as a missing branch.
 
-Below are examples showing how common control-flow structures appear in the
-``Missing`` column when branch coverage is enabled.
 
 ``if / else`` example
----------------------
+.....................
 
 Example::
 
-    10: if flag:
-    11:     do_true()
-    12: else:
-    13:     do_false()
+    flag = True
+    if flag:
+        do_true()
+    else:
+        do_false()
 
-If ``flag`` is always true, the false branch is never taken.
-This branch will be reported as missing.
+Since ``flag`` is always true, the ``else`` branch is never taken.
+This branch will be reported as missing: ``2->5``. Note that ``else`` itself
+isn't an executable line, so it is not mentioned.
 
-The report will show the missing branch::
-
-    10->13
 
 ``while`` loop example
-----------------------
+......................
 
 Example::
 
-    28: condition = True
-    29: flag = True
-    30: while condition:
-    31:     do_something = True
-    32:     if flag:
-    33:         condition = False
-    34: print("done")
+    condition = True
+    flag = True
+    while condition:
+        do_something = True
+        if flag:
+            condition = False
+    print("done")
 
-A ``while`` loop has:
+This code has these possible branches:
 
-* ``30->31`` (enter)
-* ``30->34`` (exit)
-* ``32->33`` (if True)
-* ``32->30`` (if False)
+* ``3->4`` enter the body of the loop
+* ``3->7`` exit the while loop
+* ``5->6`` if True
+* ``5->3`` if False, back to the top of the while loop.
 
 The false branch of the ``if`` statement is
-never taken, so coverage reports the missing branch::
-
-    32->30
-
-``try / except`` example
-------------------------
-
-Example::
-
-    40: try:
-    41:     blah()
-    42: except ValueError:
-    43:     handler()
-    44: print(a)
-
-* ``41->42`` when ``ValueError`` is raised
-* ``41->44`` on normal execution
-
-If ``blah()`` never raises ``ValueError``, the report will show::
-
-    41->42
+never taken, so coverage reports the missing branch as ``5->3``.

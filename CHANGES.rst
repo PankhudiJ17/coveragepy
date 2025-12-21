@@ -31,6 +31,12 @@ Unreleased
   file name. This lets us skip duplicate data more quickly, speeding the
   combining step.
 
+- Docs: added a section explaining more about what is considered a missing
+  branch and how it is reported: :ref:`branch_explain`, as requested in `issue
+  1597`_. Thanks to `Ayisha Mohammed <pull 2092_>`_.
+
+.. _issue 1597: https://github.com/coveragepy/coveragepy/issues/1597
+.. _pull 2092: https://github.com/coveragepy/coveragepy/pull/2092
 
 .. start-releases
 

@@ -98,25 +98,13 @@ detail the missed branches::
     ---------------------------------------------------------------------
     TOTAL                        91     12     18      3    87%
 
-Ranges of lines are shown with a dash: "17-23" means all lines from 17 to 23
+Ranges of lines are shown with a dash: ``17-23`` means all lines from 17 to 23
 inclusive are missing coverage.  Missed branches are shown with an arrow:
-"40->45" means the branch from line 40 to line 45 is missing.  A branch can go
+``40->45`` means the branch from line 40 to line 45 is missing.  A branch can go
 backwards in a file, so you might see a branch from a later line to an earlier
-line, like "55->50".
-
-
-Missing branches
-----------------
-
-Missing branches are shown such as ``12->10``.
-Sometimes branches appear backward.
-This means that execution never moved from line 12 back to line 10. Backward
-branches often come from loops: if a loop never repeats (or never runs),
-the backward branch is missing.
-
-For detailed examples of how branch coverage works in loops and other control
-flow constructs (``if/else``, ``for`` loops, ``while`` loops, ``try/except``),
-see :ref:`branch`.
+line, like ``55->50``. This happens when returning to the top of a loop.  For
+detailed examples of how branch coverage works in loops and other control flow
+constructs, see :ref:`branch_explain`.
 
 You can restrict the report to only certain files by naming them on the
 command line::
@@ -152,4 +140,3 @@ sign.
 Other common reporting options are described above in :ref:`cmd_reporting`.
 These options can also be set in your .coveragerc file. See
 :ref:`Configuration: [report] <config_report>`.
-
