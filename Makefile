@@ -8,12 +8,28 @@
 
 ##@ Utilities
 
-.PHONY: help _clean_platform debug_clean clean_platform clean sterile install
+.PHONY: help _clean_platform debug_clean clean_platform clean sterile venv install
 
 help:					## Show this help.
 	@# Adapted from https://www.thapaliya.com/en/writings/well-documented-makefiles/
+	@# Targets with '##' comments are shown.
 	@echo Available targets:
 	@awk -F ':.*##' '/^[^: ]+:.*##/{printf "  \033[1m%-20s\033[m %s\n",$$1,$$2} /^##@/{printf "\n%s\n",substr($$0,5)}' $(MAKEFILE_LIST)
+
+# For managing development tooling, use uv if it's available, otherwise pip.
+HAS_UV := $(shell command -v uv 2>/dev/null)
+ifdef HAS_UV
+	# PYVERSIONS
+	VENV := uv venv --python=3.10 --prompt=coverage
+	INSTALL := uv pip install
+	INSTALL_R := uv pip sync
+	UNINSTALL := uv pip uninstall
+else
+	VENV := python -m venv .venv
+	INSTALL := python -m pip install
+	INSTALL_R := python -m pip install -r
+	UNINSTALL := python -m pip uninstall -y
+endif
 
 _clean_platform:
 	@rm -f *.so */*.so
@@ -28,7 +44,7 @@ debug_clean:				## Delete various debugging artifacts.
 
 clean: debug_clean _clean_platform	## Remove artifacts of test execution, installation, etc.
 	@echo "Cleaning..."
-	@-pip uninstall -yq coverage
+	@-$(UNINSTALL) -q coverage
 	@mkdir -p build	# so the chmod won't fail if build doesn't exist
 	@chmod -R 777 build
 	@rm -rf build coverage.egg-info dist htmlcov
@@ -48,19 +64,16 @@ clean: debug_clean _clean_platform	## Remove artifacts of test execution, instal
 	@-make -C tests/gold/html clean
 
 sterile: clean				## Remove all non-controlled content, even if expensive.
+	rm -rf .venv
 	rm -rf .tox
 	rm -f cheats.txt
 
-# For installing development tooling, use uv if it's available, otherwise pip.
-HAS_UV := $(shell command -v uv 2>/dev/null)
-ifdef HAS_UV
-	INSTALL := uv pip sync
-else
-	INSTALL := python -m pip install -r
-endif
+venv: .venv				## Create a virtualenv in .venv.
+.venv:
+	$(VENV)
 
-install:				## Install the developer tools.
-	$(INSTALL) requirements/dev.pip
+install: venv				## Install the developer tools.
+	$(INSTALL_R) requirements/dev.pip
 
 
 ##@ Tests and quality checks
@@ -170,7 +183,7 @@ prebuild: css workflows cogdoc		## One command for all source prep.
 .PHONY: _sample_cog_html sample_html sample_html_beta
 
 _sample_cog_html: clean
-	python -m pip install -e .
+	$(INSTALL) -e .
 	cd ~/cog; \
 		rm -rf htmlcov; \
 		PYTEST_ADDOPTS= coverage run --branch --source=cogapp -m pytest -k CogTestsInMemory; \
@@ -191,7 +204,7 @@ sample_html_beta: _sample_cog_html	## Generate sample HTML report for a beta rel
 ##@ Kitting: making releases
 
 .PHONY: release_version edit_for_release cheats relbranch relcommit1 relcommit2
-.PHONY: kit pypi_upload test_upload kit_local build_kits update_rtd
+.PHONY: kit pypi_upload test_upload build_kits update_rtd
 .PHONY: _check_github_auth download_kits
 .PHONY: tag bump_version
 
@@ -230,15 +243,6 @@ pypi_upload:				## Upload the built distributions to PyPI.
 test_upload:				## Upload the distributions to PyPI's testing server.
 	python ci/trigger_action.py $(REPO_OWNER) publish-testpypi
 	@echo "Use that^ URL to approve the upload"
-
-kit_local:
-	# pip.conf looks like this:
-	#   [global]
-	#   find-links = file:///Users/ned/Downloads/local_pypi
-	cp -v dist/* `awk -F "//" '/find-links/ {print $$2}' ~/.pip/pip.conf`
-	# pip caches wheels of things it has installed. Clean them out so we
-	# don't go crazy trying to figure out why our new code isn't installing.
-	find ~/Library/Caches/pip/wheels -name 'coverage-*' -delete
 
 _check_github_auth:			#: Check that we have GITHUB_TOKEN for other commands that need it.
 	@if [[ -z "$$GITHUB_TOKEN" ]]; then \
