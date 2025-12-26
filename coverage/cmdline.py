@@ -861,7 +861,7 @@ class CoverageScript:
             return OK
 
         # Remaining actions are reporting, with some common options.
-        report_args = dict(
+        report_args: dict[str, Any] = dict(
             morfs=unglob_args(args),
             ignore_errors=options.ignore_errors,
             omit=omit,
