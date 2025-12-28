@@ -24,23 +24,23 @@ Unreleased
 ----------
 
 - Added: the JSON report now includes a ``"start_line"`` key for function and
-  classe regions, indicating the first line of the function or class
-  definition. Closes `issue 2110`_.
+  class regions, indicating the first line of the region in the source. Closes
+  `issue 2110`_.
 
 - Added: The ``debug data`` command now takes file names as arguments on the
   command line, so you can inspect specific data files without needing to set
-  ``COVERAGE_FILE``.
+  the ``COVERAGE_FILE`` environment variable.
 
 - Fix: the JSON report used to report module docstrings as executed lines,
-  which no other report did, as reported in `issue 2105`_. This is now fixed,
+  which no other report did, as described in `issue 2105`_. This is now fixed,
   thanks to Jianrong Zhao.
 
 - Fix: coverage.py uses a more disciplined approach to detecting where
   third-party code is installed, and avoids measuring it. This shouldn't change
   any behavior. If you find that it does, please get in touch.
 
-- Perf: data files that will be combined now record their hash as part of the
-  file name. This lets us skip duplicate data more quickly, speeding the
+- Performance: data files that will be combined now record their hash as part
+  of the file name. This lets us skip duplicate data more quickly, speeding the
   combining step.
 
 - Docs: added a section explaining more about what is considered a missing
@@ -48,7 +48,7 @@ Unreleased
   1597`_. Thanks to `Ayisha Mohammed <pull 2092_>`_.
 
 - Tests: the test suite misunderstood what core was being tested if
-  ``COVERAGE_CORE`` wasn't set on 3.14+.  This is now fixed, closing `issue
+  ``COVERAGE_CORE`` wasn't set on 3.14+. This is now fixed, closing `issue
   2109`_.
 
 .. _issue 1597: https://github.com/coveragepy/coveragepy/issues/1597
