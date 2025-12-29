@@ -204,7 +204,7 @@ jobs:
           python -m pip install -r requirements/kit.pip
 
       - name: "Set up QEMU"
-        if: ${{ matrix.arch == 'ppc64le' #matrix.arch == 'riscv64' || matrix.arch == 'ppc64le'  }}
+        if: ${{ matrix.arch == 'ppc64le' }} #matrix.arch == 'riscv64' || matrix.arch == 'ppc64le'  }}
         uses: docker/setup-qemu-action@c7c53464625b32c7a7e944ae62b3e17d2b600130 # v3.7.0
 
       - name: "Build binary wheels"
