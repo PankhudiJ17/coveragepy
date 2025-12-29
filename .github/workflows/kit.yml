@@ -114,11 +114,11 @@ jobs:
           #                   them["os-version"] = "22.04-arm"
           #               print(f"- {json.dumps(them)}")
           # ]]]
-          - {"os": "self-hosted", "py": "cp310", "arch": "ppc64le", "cipy": "3.11"} #os = self-ostes
-          - {"os": "self-hosted", "py": "cp311", "arch": "ppc64le", "cipy": "3.11"}
-          - {"os": "self-hosted", "py": "cp312", "arch": "ppc64le", "cipy": "3.11"}
-          - {"os": "self-hosted", "py": "cp313", "arch": "ppc64le", "cipy": "3.11"}
-          - {"os": "self-hosted", "py": "cp314", "arch": "ppc64le", "cipy": "3.11"}
+          - {"os": "ubuntu", "py": "cp310", "arch": "ppc64le", "cipy": "3.11"} #os = self-ostes
+          - {"os": "ubuntu", "py": "cp311", "arch": "ppc64le", "cipy": "3.11"}
+          - {"os": "ubuntu", "py": "cp312", "arch": "ppc64le", "cipy": "3.11"}
+          - {"os": "ubuntu", "py": "cp313", "arch": "ppc64le", "cipy": "3.11"}
+          - {"os": "ubuntu", "py": "cp314", "arch": "ppc64le", "cipy": "3.11"}
 
           # - {"os": "ubuntu", "py": "cp310", "arch": "x86_64", "cipy": "3.11"}
           # - {"os": "ubuntu", "py": "cp311", "arch": "x86_64", "cipy": "3.11"}
