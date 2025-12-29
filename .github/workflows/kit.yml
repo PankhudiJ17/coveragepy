@@ -214,6 +214,8 @@ jobs:
 
       - name: "Build binary wheels"
         env:
+          CIBW_CONTAINER_ENGINE: podman
+          CIBW_CONTAINER_PRIVILEGED: true
           CIBW_BUILD: ${{ matrix.py }}*-*
           CIBW_ARCHS: ${{ matrix.arch }}
           CIBW_ENVIRONMENT: PIP_DISABLE_PIP_VERSION_CHECK=1
