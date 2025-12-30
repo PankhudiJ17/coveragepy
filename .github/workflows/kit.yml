@@ -234,8 +234,8 @@ jobs:
           CIBW_ENVIRONMENT: PIP_DISABLE_PIP_VERSION_CHECK=1
           CIBW_ENABLE: cpython-prerelease cpython-freethreading
           CIBW_TEST_COMMAND: python -c "from coverage.tracer import CTracer; print('CTracer OK!')"
-        run: |
-          python -m cibuildwheel --output-dir wheelhouse
+        #run: |
+          #python -m cibuildwheel --output-dir wheelhouse
 
       - name: "List binary wheels"
         run: |
