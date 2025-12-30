@@ -221,12 +221,11 @@ jobs:
      #   uses: docker/setup-qemu-action@c7c53464625b32c7a7e944ae62b3e17d2b600130 # v3.7.0
 
       - name: "Build binary wheels"
-      - if: matrix.arch == 'ppc64le'
+        if: matrix.arch == 'ppc64le'
         run: |
           source venv/bin/activate
           cibuildwheel
-        env:
-          
+        env:          
           #CIBW_CONTAINER_ENGINE: podman
           #CIBW_CONTAINER_PRIVILEGED: true
           #CIBW_MANYLINUX_PPC64LE_IMAGE: quay.io/pypa/manylinux_2_28_ppc64le
