@@ -190,7 +190,7 @@ jobs:
       - name: "Install dependencies"
         run: |
           sudo apt update
-          sudo apt install -y python3 python3-pip python3-dev docker-compose podman  
+          sudo apt install -y python3 python3-pip python3-dev podman uidmap 
 
       # Rust toolchain is not currently installed on windows arm64 images.
       # We need it for nh3, needed by readme-renderer, needed by twine.
