@@ -230,9 +230,9 @@ jobs:
         
 
         env:          
-          CIBW_CONTAINER_ENGINE: podman
-          CIBW_CONTAINER_PRIVILEGED: true
-          CIBW_MANYLINUX_PPC64LE_IMAGE: quay.io/pypa/manylinux_2_28_ppc64le
+          #CIBW_CONTAINER_ENGINE: podman
+          #CIBW_CONTAINER_PRIVILEGED: true
+          #CIBW_MANYLINUX_PPC64LE_IMAGE: quay.io/pypa/manylinux_2_28_ppc64le
           CIBW_BUILD: ${{ matrix.py }}*-*
           CIBW_ARCHS: ${{ matrix.arch }}
           CIBW_BEFORE_BUILD: |
