@@ -223,9 +223,11 @@ jobs:
 
       - name: "Build binary wheels"
         if: matrix.arch == 'ppc64le'
-        run: |
-            source venv/bin/activate
-            cibuildwheel
+      #  run: |
+      #      source venv/bin/activate
+      #      cibuildwheel
+
+        
 
         env:          
           CIBW_CONTAINER_ENGINE: podman
@@ -233,18 +235,20 @@ jobs:
           CIBW_MANYLINUX_PPC64LE_IMAGE: quay.io/pypa/manylinux_2_28_ppc64le
           CIBW_BUILD: ${{ matrix.py }}*-*
           CIBW_ARCHS: ${{ matrix.arch }}
-          # CIBW_BEFORE_BUILD: |
-          #  yum install -y yum-utils \
-          #  && yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo \
-          #  && yum install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin \
-          #  && systemctl start docker
-          #  && docker --version
+          CIBW_BEFORE_BUILD: |
+           yum install -y yum-utils \
+           && yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo \
+           && yum install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin \
+           && systemctl start docker
+           && docker --version
           CIBW_ENVIRONMENT: PIP_DISABLE_PIP_VERSION_CHECK=1
           CIBW_ENABLE: cpython-prerelease cpython-freethreading
           CIBW_TEST_COMMAND: python -c "from coverage.tracer import CTracer; print('CTracer OK!')"
         #run: |
         #   python -m cibuildwheel --output-dir wheelhouse
-
+        run: |
+          source venv/bin/activate
+          cibuildwheel
       - name: "List binary wheels"
         run: |
           ls -al wheelhouse/
