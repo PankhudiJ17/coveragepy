@@ -189,16 +189,21 @@ jobs:
 
       - name: "Install dependencies"
         run: |
-          sudo apt update
-          sudo apt install -y python3 python3-pip python3-dev python3-venv
-          python3 -m pip install --upgrade pip
-          python3 -m pip install cibuildwheel
+          sudo yum install -y yum-utils \
+          && yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo \
+          && yum install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin \
+          && systemctl start docker
+ 
+         #sudo apt update
+          #sudo apt install -y python3 python3-pip python3-dev python3-venv
+          #python3 -m pip install --upgrade pip
+          #python3 -m pip install cibuildwheel
 
-      - if: matrix.arch == 'ppc64le'
-        run: |
-          python3 -m venv venv
-          source venv/bin/activate
-          pip install -U pip setuptools wheel cibuildwheel 
+      # - if: matrix.arch == 'ppc64le'
+      #   run: |
+      #     python3 -m venv venv
+      #     source venv/bin/activate
+      #     pip install -U pip setuptools wheel cibuildwheel 
 
       # Rust toolchain is not currently installed on windows arm64 images.
       # We need it for nh3, needed by readme-renderer, needed by twine.
@@ -235,8 +240,8 @@ jobs:
           CIBW_ENVIRONMENT: PIP_DISABLE_PIP_VERSION_CHECK=1
           CIBW_ENABLE: cpython-prerelease cpython-freethreading
           CIBW_TEST_COMMAND: python -c "from coverage.tracer import CTracer; print('CTracer OK!')"
-        #run: |
-          #python -m cibuildwheel --output-dir wheelhouse
+        run: |
+          python -m cibuildwheel --output-dir wheelhouse
 
       - name: "List binary wheels"
         run: |
