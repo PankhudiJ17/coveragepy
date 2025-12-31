@@ -236,11 +236,11 @@ jobs:
           CIBW_BUILD: ${{ matrix.py }}*-*
           CIBW_ARCHS: ${{ matrix.arch }}
           CIBW_BEFORE_BUILD: |
-           yum install -y yum-utils \
-           && yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo \
-           && yum install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin \
-           && systemctl start docker
-           && docker --version
+           sudo yum install -y yum-utils \
+           && sudo yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo \
+           && sudo yum install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin \
+           && sudo systemctl start docker
+          
           CIBW_ENVIRONMENT: PIP_DISABLE_PIP_VERSION_CHECK=1
           CIBW_ENABLE: cpython-prerelease cpython-freethreading
           CIBW_TEST_COMMAND: python -c "from coverage.tracer import CTracer; print('CTracer OK!')"
