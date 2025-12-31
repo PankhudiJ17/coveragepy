@@ -226,11 +226,11 @@ jobs:
      #   if: ${{ matrix.arch == 'ppc64le' }} #matrix.arch == 'riscv64' || matrix.arch == 'ppc64le'  }}
      #   uses: docker/setup-qemu-action@c7c53464625b32c7a7e944ae62b3e17d2b600130 # v3.7.0
 
-      - name: "Build binary wheels"
-        if: matrix.arch == 'ppc64le'
-        run: |
-          source venv/bin/activate
-          cibuildwheel
+      # - name: "Build binary wheels"
+      #   if: matrix.arch == 'ppc64le'
+      #   run: |
+      #     source venv/bin/activate
+      #     cibuildwheel
 
         env:          
           #CIBW_CONTAINER_ENGINE: podman
@@ -246,8 +246,8 @@ jobs:
           CIBW_ENVIRONMENT: PIP_DISABLE_PIP_VERSION_CHECK=1
           CIBW_ENABLE: cpython-prerelease cpython-freethreading
           CIBW_TEST_COMMAND: python -c "from coverage.tracer import CTracer; print('CTracer OK!')"
-        #run: |
-         # python -m cibuildwheel --output-dir wheelhouse
+        run: |
+           python -m cibuildwheel --output-dir wheelhouse
 
       - name: "List binary wheels"
         run: |
