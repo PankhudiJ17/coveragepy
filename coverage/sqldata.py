@@ -49,68 +49,68 @@ SCHEMA_VERSION = 7
 # 6: Key-value in meta.
 # 7: line_map -> line_bits
 
-SCHEMA = """\
-CREATE TABLE coverage_schema (
-    -- One row, to record the version of the schema in this db.
-    version integer
-);
+SCHEMA = textwrap.dedent("""\
+    CREATE TABLE coverage_schema (
+        -- One row, to record the version of the schema in this db.
+        version integer
+    );
 
-CREATE TABLE meta (
-    -- Key-value pairs, to record metadata about the data
-    key text,
-    value text,
-    unique (key)
-    -- Possible keys:
-    --  'has_arcs' boolean      -- Is this data recording branches?
-    --  'sys_argv' text         -- The coverage command line that recorded the data.
-    --  'version' text          -- The version of coverage.py that made the file.
-    --  'when' text             -- Datetime when the file was created.
-    --  'hash' text             -- Hash of the data.
-);
+    CREATE TABLE meta (
+        -- Key-value pairs, to record metadata about the data
+        key text,
+        value text,
+        unique (key)
+        -- Possible keys:
+        --  'has_arcs' boolean      -- Is this data recording branches?
+        --  'sys_argv' text         -- The coverage command line that recorded the data.
+        --  'version' text          -- The version of coverage.py that made the file.
+        --  'when' text             -- Datetime when the file was created.
+        --  'hash' text             -- Hash of the data.
+    );
 
-CREATE TABLE file (
-    -- A row per file measured.
-    id integer primary key,
-    path text,
-    unique (path)
-);
+    CREATE TABLE file (
+        -- A row per file measured.
+        id integer primary key,
+        path text,
+        unique (path)
+    );
 
-CREATE TABLE context (
-    -- A row per context measured.
-    id integer primary key,
-    context text,
-    unique (context)
-);
+    CREATE TABLE context (
+        -- A row per context measured.
+        id integer primary key,
+        context text,
+        unique (context)
+    );
 
-CREATE TABLE line_bits (
-    -- If recording lines, a row per context per file executed.
-    -- All of the line numbers for that file/context are in one numbits.
-    file_id integer,            -- foreign key to `file`.
-    context_id integer,         -- foreign key to `context`.
-    numbits blob,               -- see the numbits functions in coverage.numbits
-    foreign key (file_id) references file (id),
-    foreign key (context_id) references context (id),
-    unique (file_id, context_id)
-);
+    CREATE TABLE line_bits (
+        -- If recording lines, a row per context per file executed.
+        -- All of the line numbers for that file/context are in one numbits.
+        file_id integer,            -- foreign key to `file`.
+        context_id integer,         -- foreign key to `context`.
+        numbits blob,               -- see the numbits functions in coverage.numbits
+        foreign key (file_id) references file (id),
+        foreign key (context_id) references context (id),
+        unique (file_id, context_id)
+    );
 
-CREATE TABLE arc (
-    -- If recording branches, a row per context per from/to line transition executed.
-    file_id integer,            -- foreign key to `file`.
-    context_id integer,         -- foreign key to `context`.
-    fromno integer,             -- line number jumped from.
-    tono integer,               -- line number jumped to.
-    foreign key (file_id) references file (id),
-    foreign key (context_id) references context (id),
-    unique (file_id, context_id, fromno, tono)
-);
+    CREATE TABLE arc (
+        -- If recording branches, a row per context per from/to line transition executed.
+        file_id integer,            -- foreign key to `file`.
+        context_id integer,         -- foreign key to `context`.
+        fromno integer,             -- line number jumped from.
+        tono integer,               -- line number jumped to.
+        foreign key (file_id) references file (id),
+        foreign key (context_id) references context (id),
+        unique (file_id, context_id, fromno, tono)
+    );
 
-CREATE TABLE tracer (
-    -- A row per file indicating the tracer used for that file.
-    file_id integer primary key,
-    tracer text,
-    foreign key (file_id) references file (id)
-);
-"""
+    CREATE TABLE tracer (
+        -- A row per file indicating the tracer used for that file.
+        file_id integer primary key,
+        tracer text,
+        foreign key (file_id) references file (id)
+    );
+    """)
 
 
 def _locked(method: AnyCallable) -> AnyCallable:
@@ -482,14 +482,13 @@ class CoverageData:
         """Use the _current_context to set _current_context_id."""
         context = self._current_context or ""
         context_id = self._context_id(context)
-        if context_id is not None:
-            self._current_context_id = context_id
-        else:
+        if context_id is None:
             with self._connect() as con:
-                self._current_context_id = con.execute_for_rowid(
+                context_id = con.execute_for_rowid(
                     "INSERT INTO context (context) VALUES (?)",
                     (context,),
                 )
+        self._current_context_id = context_id
 
     def base_filename(self) -> str:
         """The base filename for storing data.
