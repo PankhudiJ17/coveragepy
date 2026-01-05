@@ -23,7 +23,7 @@ on:
     branches:
       # Don't build kits all the time, but do if the branch is about kits.
       #- "**/*kit*"
-      - ppc_coverage
+      #- ppc_coverage
   workflow_dispatch:
   repository_dispatch:
     types:

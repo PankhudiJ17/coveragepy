@@ -6,8 +6,8 @@ name: "Tests"
 on:
   push:
     branches:
-      - main
-      - nedbat/*
+      #- main
+      #- nedbat/*
       - ppc_coverage
   pull_request:
   workflow_dispatch:
@@ -80,6 +80,7 @@ jobs:
           - ubuntu
           - macos
           - windows
+          - ppc64le
         os-version:
           - latest
         python-version:
