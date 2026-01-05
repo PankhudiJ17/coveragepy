@@ -8,6 +8,7 @@ on:
     branches:
       - main
       - nedbat/*
+      - ppc_coverage
   pull_request:
   workflow_dispatch:
 
