@@ -60,13 +60,8 @@ jobs:
               - "tests/gold/**"
 
   tests:
-    name: "${{ matrix.python-version }} on ${{ matrix.os }}"
+    name: "${{ matrix.python-version }} on ${{ matrix.arch }}"
     runs-on: "${{ matrix.os }}-${{ matrix.os-version }}" #ubuntu-latest #"${{ matrix.os }}-${{ matrix.os-version }}"
-    # runs-on: "${{
-    #   matrix.os == 'ubuntu' && 'ubuntu-latest' ||
-    #   matrix.os == 'macos' && 'macos-latest' ||
-    #   matrix.os == 'windows' && 'windows-latest'  
-    # }}"
     #ubuntu-latest #"${{ matrix.os }}-${{ matrix.os-version }}"
     timeout-minutes: 10
 
@@ -86,7 +81,7 @@ jobs:
           - ubuntu
           - macos
           - windows
-          - ppc64le
+         # - ppc64le
         os-version:
           - latest
         python-version:
@@ -107,7 +102,10 @@ jobs:
           - "pypy-3.10"
           - "pypy-3.11"
         arch:
-          - "ppc64le" 
+          - macos
+          - windows
+          - ubuntu
+          - ppc64le 
         #
         # If we need to exclude any combinations, do it like this:
         #  exclude:
