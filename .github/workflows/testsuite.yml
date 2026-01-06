@@ -60,7 +60,7 @@ jobs:
               - "tests/gold/**"
 
   tests:
-    name: "${{ matrix.python-version }} on ${{ matrix.os }} (${{ matrix.arch}})"
+    name: "${{ matrix.python-version }} on ${{ matrix.os }} on ${{ matrix.arch }}"
     runs-on: ${{
       matrix.os == 'ubuntu' && 'ubuntu-latest' ||
       matrix.os == 'macos' && 'macos-latest' ||
