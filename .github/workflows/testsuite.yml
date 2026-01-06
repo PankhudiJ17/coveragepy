@@ -60,8 +60,12 @@ jobs:
               - "tests/gold/**"
 
   tests:
-    name: "${{ matrix.python-version }} on ${{ matrix.os }}"
-    runs-on: "${{ matrix.os }}-${{ matrix.os-version }}" #ubuntu-latest #"${{ matrix.os }}-${{ matrix.os-version }}"
+    name: "${{ matrix.python-version }} on ${{ matrix.os }} (${{ matrix.arch}})"
+    runs-on: ${{
+      matrix.os == 'ubuntu' && 'ubuntu-latest' ||
+      matrix.os == 'macos' && 'macos-latest' ||
+      matrix.os == 'windows' && 'windows-latest'  
+    }} #ubuntu-latest #"${{ matrix.os }}-${{ matrix.os-version }}"
     timeout-minutes: 10
 
     # Don't run tests if the branch name includes "-notests".
@@ -80,7 +84,7 @@ jobs:
           - ubuntu
           - macos
           - windows
-          - ppc64le
+          #- ppc64le
         os-version:
           - latest
         python-version:
@@ -125,7 +129,7 @@ jobs:
           persist-credentials: false
       
       - name: "Set up QEMU"
-        if: ${{ matrix.arch == 'ppc64le' }}
+        if: ${{matrix.os == 'ubuntu'}} && ${{ matrix.arch == 'ppc64le' }}
         uses: docker/setup-qemu-action@c7c53464625b32c7a7e944ae62b3e17d2b600130 
 
       - name: "Set up Python"
