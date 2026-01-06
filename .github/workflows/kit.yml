@@ -19,8 +19,8 @@
 name: "Kits"
 
 on:
-  push:
-    branches:
+  # push:
+  #   branches:
       # Don't build kits all the time, but do if the branch is about kits.
       #- "**/*kit*"
       #- ppc_coverage
