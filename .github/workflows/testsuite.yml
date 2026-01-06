@@ -80,6 +80,7 @@ jobs:
           - ubuntu
           - macos
           - windows
+          - ppc64le
         os-version:
           - latest
         python-version:
