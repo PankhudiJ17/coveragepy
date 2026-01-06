@@ -131,7 +131,7 @@ jobs:
           persist-credentials: false
       
       - name: "Set up QEMU"
-        if: ${{matrix.os == 'ubuntu'}} && ${{ matrix.arch == 'ppc64le' }}
+        if: "${{ matrix.arch == 'ppc64le' }}"
         uses: docker/setup-qemu-action@c7c53464625b32c7a7e944ae62b3e17d2b600130 
 
       - name: "Set up Python"
