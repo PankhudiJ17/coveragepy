@@ -61,11 +61,12 @@ jobs:
 
   tests:
     name: "${{ matrix.python-version }} on ${{ matrix.os }}"
-    runs-on: "${{
-      matrix.os == 'ubuntu' && 'ubuntu-latest' ||
-      matrix.os == 'macos' && 'macos-latest' ||
-      matrix.os == 'windows' && 'windows-latest'  
-    }}"
+    runs-on: "${{ matrix.os }}-${{ matrix.os-version }}"
+    # runs-on: "${{
+    #   matrix.os == 'ubuntu' && 'ubuntu-latest' ||
+    #   matrix.os == 'macos' && 'macos-latest' ||
+    #   matrix.os == 'windows' && 'windows-latest'  
+    # }}"
     #ubuntu-latest #"${{ matrix.os }}-${{ matrix.os-version }}"
     timeout-minutes: 10
 
