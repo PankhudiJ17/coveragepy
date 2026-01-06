@@ -172,8 +172,8 @@ jobs:
           python -m tox -- -rfsEX --lf -vvvvv && exit 1
 
       - name: "Set up QEMU"
-        if: ${{ matrix.arch == 'ppc64le' }}
-        uses: docker/setup-qemu-action@c7c53464625b32c7a7e944ae62b3e17d2b600130     
+        if: ${{ matrix.arch == 'ppc64le'  }}
+        uses: docker/setup-qemu-action@c7c53464625b32c7a7e944ae62b3e17d2b600130 # v3.7.0   
 
   # This job aggregates test results. It's the required check for branch protection.
   # https://github.com/marketplace/actions/alls-green#why
