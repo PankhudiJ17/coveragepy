@@ -213,7 +213,7 @@ jobs:
             docker run --rm --platform=linux/ppc64le \
             ppc64le/python:${{ matrix.python-version }}-slim \
             bash -exec "
-              python -m pip install -U setuptools wheel
+              python -m pip install -U setuptools wheel pip
               python -m pip install -r requirements/tox.pip 
               python -m tox -- -rfsEX
             " 
