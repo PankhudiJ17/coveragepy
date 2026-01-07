@@ -217,7 +217,7 @@ jobs:
             -w /work \
             ubuntu:24.04 \
             bash -exec "
-              apt update -y && apt install gcc python3.12 -y
+              apt update -y && apt install gcc python3.12 python3.12-pip -y
               python3.12 -m pip install -r requirements/tox.pip 
               python3.12 -m tox -- -rfsEX
             " 
