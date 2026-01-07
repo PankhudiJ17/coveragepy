@@ -215,7 +215,7 @@ jobs:
             -e HYPOTHESIS_PROFILE=ci \
             -v "$PWD:/work" \
             -w /work \
-            ppc64le/python:${{ matrix.python-version }}-slim \
+            ppc64le/python:3.11-slim \
             bash -exec "
               apt update -y 
               apt install build-essential git gcc -y
