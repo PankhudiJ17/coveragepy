@@ -219,8 +219,8 @@ jobs:
             -w /work \
             ppc64le/python:${{ matrix.python-version }}-slim \
             bash -exec "
-              apt update -y && apt install build-essential git gcc -y
-              python -m pip install -U setuptools wheel pip
+              apt update -y && apt install gcc -y
+              python -m pip install -U pip
               python -m pip install -r requirements/tox.pip 
               python -m tox -- -rfsEX
             " 
