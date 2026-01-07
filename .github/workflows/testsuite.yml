@@ -20,7 +20,7 @@ env:
   PIP_DISABLE_PIP_VERSION_CHECK: 1
   COVERAGE_IGOR_VERBOSE: 2
   FORCE_COLOR: 1    # Get colored pytest output
-  HYPOTHESIS_PROFILE: slow
+  HYPOTHESIS_PROFILE: ci
 
 permissions:
   contents: read
@@ -213,6 +213,7 @@ jobs:
             set -xe
             docker run --rm \
             --platform=linux/ppc64le \
+            -e HYPOTHESIS_DISABLE_HEALTH_CHECK=too_slow \
             -v "$PWD:/work" \
             -w /work \
             ppc64le/python:${{ matrix.python-version }}-slim \
