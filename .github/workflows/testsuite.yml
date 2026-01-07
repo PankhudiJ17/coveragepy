@@ -185,7 +185,7 @@ jobs:
        #   - "pypy-3.11"
       
         arch:
-          ppc64le 
+          - ppc64le 
       fail-fast: false    
     
     steps:
