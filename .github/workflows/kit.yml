@@ -1,11 +1,11 @@
 name: "Kits"
 
 on:
-  push:
-    branches:
-      # Don't build kits all the time, but do if the branch is about kits.
-      #- "**/*kit*"
-      - ppc_coverage
+  # push:
+  #   branches:
+  #     # Don't build kits all the time, but do if the branch is about kits.
+  #     #- "**/*kit*"
+  #     - ppc_coverage
   workflow_dispatch:
   repository_dispatch:
     types:
