@@ -207,6 +207,7 @@ jobs:
       - name: "Setup docker buildx" 
         uses: docker/setup-buildx-action@v3 
 
+      
       - name: "Run test on ppc"
         run: |
             set -xe
@@ -214,6 +215,7 @@ jobs:
             -w /work \
             ppc64le/python:${{ matrix.python-version }}-slim \
             bash -exec "
+              apt update -y && apt install gcc -y
               python -m pip install -U setuptools wheel pip
               python -m pip install -r requirements/tox.pip 
               python -m tox -- -rfsEX
