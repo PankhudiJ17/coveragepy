@@ -183,8 +183,7 @@ jobs:
        #  - "3.15t"
        #   - "pypy-3.10"
        #   - "pypy-3.11"
-        arch:
-          - ppc64le  
+      
 
       fail-fast: false    
     
@@ -213,15 +212,16 @@ jobs:
             set -xe
             docker run --rm \
             --platform=linux/ppc64le \
-            -e HYPOTHESIS_DISABLE_HEALTH_CHECK=too_slow \
+            -e HYPOTHESIS_PROFILE=ci \
             -v "$PWD:/work" \
             -w /work \
             ppc64le/python:${{ matrix.python-version }}-slim \
             bash -exec "
-              apt update -y && apt install build-essential git gcc -y
-              python -m pip install -U setuptools wheel pip
+              apt update -y 
+              apt install build-essential git gcc -y
+              python -m pip install -U pip setuptools wheel 
               python -m pip install -r requirements/tox.pip 
-              python -m tox -- -rfsEX
+              python -m tox -- -rfsEX --hypothesis-suppress-health-check=too_slow
             " 
     
       # - name: "Show environment"
