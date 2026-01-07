@@ -4,11 +4,11 @@
 name: "Tests"
 
 on:
-  push:
-    branches:
-      #- main
-      #- nedbat/*
-      - ppc_coverage
+  #push:
+    # branches:
+    #   #- main
+    #   #- nedbat/*
+    #   - ppc_coverage
   pull_request:
   workflow_dispatch:
 
