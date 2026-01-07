@@ -172,8 +172,8 @@ jobs:
     strategy:
       matrix:
         python-version:
-          - "3.10"
-          - "3.11"
+          #- "3.10"
+         # - "3.11"
           - "3.12"
         #  - "3.13"
        #   - "3.13t"
@@ -213,16 +213,14 @@ jobs:
             set -xe
             docker run --rm \
             --platform=linux/ppc64le \
-            -e PYTEST_ADDOPTS="--suppress-health-check=too_slow" \
-            -e HYPOTHESIS_PROFILE=ci \
             -v "$PWD:/work" \
             -w /work \
-            ppc64le/python:${{ matrix.python-version }}-slim \
+            ubuntu:24.04 \
             bash -exec "
-              apt update -y && apt install gcc -y
-              python -m pip install -U pip
-              python -m pip install -r requirements/tox.pip 
-              python -m tox -- -rfsEX
+              apt update -y && apt install gcc python3.12 -y
+              python3.12 -m pip install -U pip
+              python3.12 -m pip install -r requirements/tox.pip 
+              python3.12 -m tox -- -rfsEX
             " 
     
       # - name: "Show environment"
