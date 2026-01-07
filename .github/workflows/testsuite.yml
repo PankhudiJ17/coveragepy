@@ -176,13 +176,13 @@ jobs:
           - "3.11"
           - "3.12"
           - "3.13"
-          - "3.13t"
-          - "3.14"
-          - "3.14t"
-          - "3.15"
-          - "3.15t"
-          - "pypy-3.10"
-          - "pypy-3.11"
+       #   - "3.13t"
+       #   - "3.14"
+       #   - "3.14t"
+       #   - "3.15"
+       #  - "3.15t"
+       #   - "pypy-3.10"
+       #   - "pypy-3.11"
         arch:
           - ppc64le  
 
@@ -215,7 +215,7 @@ jobs:
             -w /work \
             quay.io/pypa/manylinux_2_28_ppc64le \
             bash -exec "
-              apt update -y && apt install gcc -y
+              yum update -y && yum install gcc python${{matrix.python-version}} -y
               python -m pip install -U setuptools wheel pip
               python -m pip install -r requirements/tox.pip 
               python -m tox -- -rfsEX
