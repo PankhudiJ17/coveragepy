@@ -221,7 +221,7 @@ jobs:
               apt update -y && apt install build-essential git gcc -y
               python -m pip install -U setuptools wheel pip
               python -m pip install -r requirements/tox.pip 
-              python -m tox -- -rfsEX --suppress-health-check=too_slow
+              python -m tox -- -rfsEX -suppress-health-check=too_slow
             " 
     
       # - name: "Show environment"
