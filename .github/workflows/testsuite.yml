@@ -213,7 +213,7 @@ jobs:
             set -xe
             docker run --rm \
             --platform=linux/ppc64le \
-            -e PYTEST_ADDOPTS="--hypothesis-suppress-health-check=too_slow" \
+            -e PYTEST_ADDOPTS="--suppress-health-check=too_slow" \
             -e HYPOTHESIS_PROFILE=ci \
             -v "$PWD:/work" \
             -w /work \
