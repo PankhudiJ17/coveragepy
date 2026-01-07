@@ -81,9 +81,7 @@ jobs:
           - macos
           - windows
         os-version:
-          - latest
-        arch:
-          - ppc64le   
+          - latest 
         python-version:
           # When changing this list, be sure to check the [gh] list in
           # tox.ini so that tox will run properly. PYVERSIONS
@@ -185,7 +183,6 @@ jobs:
           - "3.15t"
           - "pypy-3.10"
           - "pypy-3.11"
-
         arch:
           - ppc64le  
 
@@ -203,6 +200,10 @@ jobs:
           python-version: "${{ matrix.python-version }}"
           allow-prereleases: true
            
+      - name: "Set up QEMU"
+        if: ${{ matrix.arch == 'ppc64le'  }}
+        uses: docker/setup-qemu-action@c7c53464625b32c7a7e944ae62b3e17d2b600130 # v3.7.0         
+    
       - name: "Show environment"
         run: |
           set -xe
@@ -233,9 +234,6 @@ jobs:
           # `exit 1` makes sure that the job remains red with flaky runs
           python -m tox -- -rfsEX --lf -vvvvv && exit 1
 
-      - name: "Set up QEMU"
-        if: ${{ matrix.arch == 'ppc64le'  }}
-        uses: docker/setup-qemu-action@c7c53464625b32c7a7e944ae62b3e17d2b600130 # v3.7.0    
   # This job aggregates test results. It's the required check for branch protection.
   # https://github.com/marketplace/actions/alls-green#why
   # https://github.com/orgs/community/discussions/33579
