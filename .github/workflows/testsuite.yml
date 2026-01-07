@@ -212,7 +212,6 @@ jobs:
             set -xe
             docker run --rm \
             --platform=linux/ppc64le \
-            -e HYPOTHESIS_PROFILE=ci \
             -v "$PWD:/work" \
             -w /work \
             ppc64le/python:3.11-slim \
