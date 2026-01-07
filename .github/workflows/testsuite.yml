@@ -210,7 +210,8 @@ jobs:
       - name: "Run test on ppc"
         run: |
             set -xe
-            docker run --rm --platform=linux/ppc64le \
+            docker run --rm --platform=linux/ppc64le -v "$PWD:/work" \
+            -w /work \
             ppc64le/python:${{ matrix.python-version }}-slim \
             bash -exec "
               python -m pip install -U setuptools wheel pip
