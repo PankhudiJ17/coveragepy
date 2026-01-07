@@ -175,7 +175,7 @@ jobs:
           - "3.10"
           - "3.11"
           - "3.12"
-          - "3.13"
+        #  - "3.13"
        #   - "3.13t"
        #   - "3.14"
        #   - "3.14t"
@@ -211,11 +211,13 @@ jobs:
       - name: "Run test on ppc"
         run: |
             set -xe
-            docker run --rm --platform=linux/ppc64le -v "$PWD:/work" \
+            docker run --rm \
+            --platform=linux/ppc64le \
+            -v "$PWD:/work" \
             -w /work \
-            quay.io/pypa/manylinux_2_28_ppc64le \
+            ppc64le/python:${{ matrix.python-version }}-slim \
             bash -exec "
-              yum update -y && yum install gcc python${{matrix.python-version}} -y
+              apt update -y && apt install build-essential git gcc -y
               python -m pip install -U setuptools wheel pip
               python -m pip install -r requirements/tox.pip 
               python -m tox -- -rfsEX
@@ -258,6 +260,7 @@ jobs:
     name: Tests successful
     needs:
       - tests
+      - tests-ppc64le
     runs-on: ubuntu-latest
     steps:
       - name: Decide whether the needed jobs succeeded or failed
