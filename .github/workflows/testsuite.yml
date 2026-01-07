@@ -213,7 +213,8 @@ jobs:
             set -xe
             docker run --rm \
             --platform=linux/ppc64le \
-            -e HYPOTHESIS_DISABLE_HEALTH_CHECK=too_slow \
+            -e PYTEST_ADDOPTS="--hypothesis-suppress-health-check=too_slow" \
+            -e HYPOTHESIS_PROFILE=ci \
             -v "$PWD:/work" \
             -w /work \
             ppc64le/python:${{ matrix.python-version }}-slim \
@@ -221,7 +222,7 @@ jobs:
               apt update -y && apt install build-essential git gcc -y
               python -m pip install -U setuptools wheel pip
               python -m pip install -r requirements/tox.pip 
-              python -m tox -- -rfsEX -suppress-health-check=too_slow
+              python -m tox -- -rfsEX
             " 
     
       # - name: "Show environment"
