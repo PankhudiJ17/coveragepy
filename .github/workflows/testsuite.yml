@@ -194,45 +194,59 @@ jobs:
         with:
           persist-credentials: false
 
-      - name: "Set up Python"
-        uses: actions/setup-python@83679a892e2d95755f2dac6acb0bfd1e9ac5d548 # v6.1.0
-        with:
-          python-version: "${{ matrix.python-version }}"
-          allow-prereleases: true
+      # - name: "Set up Python"
+      #   uses: actions/setup-python@83679a892e2d95755f2dac6acb0bfd1e9ac5d548 # v6.1.0
+      #   with:
+      #     python-version: "${{ matrix.python-version }}"
+      #     allow-prereleases: true
            
       - name: "Set up QEMU"
         if: ${{ matrix.arch == 'ppc64le'  }}
-        uses: docker/setup-qemu-action@v3         
+        uses: docker/setup-qemu-action@v3     
+
+      - name: "Setup docker buildx" 
+        uses: docker/setup-buildx-action@v3 
+
+      - name: "Run test on ppc"
+        run: |
+            set -xe
+            docker run --rm --platform=linux/ppc64le \
+            ppc64le/python:${{ matrix.python-version }}-slim \
+            bash -exec "
+              python -m pip install -u setuptools wheel
+              python -m pip install -r requirements/tox.pip 
+              python -m tox -- -rfsEX
+            " 
     
-      - name: "Show environment"
-        run: |
-          set -xe
-          python -VV
-          python -m site
-          # For extreme debugging:
-          # python -c "import urllib.request as r; exec(r.urlopen('https://bit.ly/pydoctor').read())"
-          env | sort
-          # Ideally, the system Python wouldn't have writable sitepackages so
-          # try to make it not writable.  We can't always always change the
-          # permissions (Ubuntu & Windows yes, Mac no), so be ready for it to fail.
-          chmod u-w $(python -c "import site; print(site.getsitepackages()[0])") || echo "Couldn't lock down site-packages"
-          ls -ld $(python -c "import site; print(site.getsitepackages()[0])")
-          whoami
+      # - name: "Show environment"
+      #   run: |
+      #     set -xe
+      #     python -VV
+      #     python -m site
+      #     # For extreme debugging:
+      #     # python -c "import urllib.request as r; exec(r.urlopen('https://bit.ly/pydoctor').read())"
+      #     env | sort
+      #     # Ideally, the system Python wouldn't have writable sitepackages so
+      #     # try to make it not writable.  We can't always always change the
+      #     # permissions (Ubuntu & Windows yes, Mac no), so be ready for it to fail.
+      #     chmod u-w $(python -c "import site; print(site.getsitepackages()[0])") || echo "Couldn't lock down site-packages"
+      #     ls -ld $(python -c "import site; print(site.getsitepackages()[0])")
+      #     whoami
 
-      - name: "Install dependencies"
-        run: |
-          set -xe
-          python -m pip install -r requirements/tox.pip
+      # - name: "Install dependencies"
+      #   run: |
+      #     set -xe
+      #     python -m pip install -r requirements/tox.pip
 
-      - name: "Run tox for ${{ matrix.python-version }}"
-        run: |
-          python -m tox -- -rfsEX
+      # - name: "Run tox for ${{ matrix.python-version }}"
+      #   run: |
+      #     python -m tox -- -rfsEX
 
-      - name: "Retry tox for ${{ matrix.python-version }}"
-        if: failure()
-        run: |
-          # `exit 1` makes sure that the job remains red with flaky runs
-          python -m tox -- -rfsEX --lf -vvvvv && exit 1
+      # - name: "Retry tox for ${{ matrix.python-version }}"
+      #   if: failure()
+      #   run: |
+      #     # `exit 1` makes sure that the job remains red with flaky runs
+      #     python -m tox -- -rfsEX --lf -vvvvv && exit 1
 
   # This job aggregates test results. It's the required check for branch protection.
   # https://github.com/marketplace/actions/alls-green#why
