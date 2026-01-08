@@ -21,7 +21,7 @@ import pytest
 from coverage.files import set_relative_directory
 
 from tests import testenv
-
+from hypothesis import HealthCheck
 
 # Pytest will rewrite assertions in test modules, but not elsewhere.
 # This tells pytest to also rewrite assertions in these files:
@@ -40,7 +40,7 @@ pytest_plugins = [
 hypothesis.settings.register_profile("slow", max_examples=25_000)
 hypothesis.settings.register_profile("250k", max_examples=250_000)
 # In CI, using the database makes the first draw take more than a second.
-hypothesis.settings.register_profile("ci", database=None, max_examples=1000)
+hypothesis.settings.register_profile("ci", database=None, max_examples=1000, suppress_health_check=[HealthCheck.too_slow], deadline=None)
 hypothesis.settings.load_profile(os.getenv("HYPOTHESIS_PROFILE", "default"))
 
 
