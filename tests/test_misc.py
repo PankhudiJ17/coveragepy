@@ -10,7 +10,7 @@ from typing import Any
 from unittest import mock
 
 import pytest
-from hypothesis import example, given, strategies as st
+from hypothesis import example, given, settings, HealthCheck strategies as st
 
 from coverage.exceptions import CoverageException
 from coverage.misc import file_be_gone
@@ -42,6 +42,7 @@ class HasherTest(CoverageTest):
     # Use nested_data_strategies to generate data schemas, then use it twice in
     # the test to get two chunks of data with the "same shape" but different
     # data.
+    @settings(suppress_health_check=[HealthCheck.too_slow])
     @example(([1, None, 2, None], [1, 2]))
     @example(("Hello, world!", "Hello, world!"))
     @example(("Hello", "Goodbye"))
