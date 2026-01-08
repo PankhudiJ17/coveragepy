@@ -10,7 +10,7 @@ import sqlite3
 
 from collections.abc import Iterable
 
-from hypothesis import example, given, settings
+from hypothesis import example, given, settings, HealthCheck
 from hypothesis.strategies import sets, integers
 
 from coverage import env
@@ -33,7 +33,9 @@ line_number_sets = sets(line_numbers)
 # When coverage-testing ourselves, hypothesis complains about a test being
 # flaky because the first run exceeds the deadline (and fails), and the second
 # run succeeds.  Disable the deadline if we are coverage-testing.
-default_settings = settings(deadline=400)  # milliseconds
+default_settings = settings(
+    deadline=400,
+    suppress_health_check=[HealthCheck.too_slow])  # milliseconds
 if env.METACOV:
     default_settings = settings(default_settings, deadline=None)
 
