@@ -213,7 +213,6 @@ jobs:
             set -xe
             docker run --rm \
             --platform=linux/ppc64le \
-            -e HYPOTHESIS_DISABLE_HEALTH_CHECKS=too_slow \
             -v "$PWD:/work" \
             -w /work \
             ubuntu:24.04 \
