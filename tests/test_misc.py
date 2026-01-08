@@ -10,7 +10,7 @@ from typing import Any
 from unittest import mock
 
 import pytest
-from hypothesis import example, given, settings, HealthCheck strategies as st
+from hypothesis import example, given, settings, HealthCheck, strategies as st
 
 from coverage.exceptions import CoverageException
 from coverage.misc import file_be_gone
