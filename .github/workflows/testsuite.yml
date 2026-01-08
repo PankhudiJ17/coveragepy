@@ -165,7 +165,7 @@ jobs:
   tests-ppc64le:
     name: "Tests on ppc64le (QEMU) ${{ matrix.python-version }}"
     runs-on: ubuntu-latest
-    timeout-minutes: 20
+    timeout-minutes: 30
 
     needs: changed
 
