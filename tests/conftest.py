@@ -41,22 +41,22 @@ hypothesis.settings.register_profile("slow", max_examples=25_000)
 hypothesis.settings.register_profile("250k", max_examples=250_000)
 # In CI, using the database makes the first draw take more than a second.
 #hypothesis.settings.register_profile("ci", database=None, max_examples=1000, suppress_health_check=[HealthCheck.too_slow], deadline=None)
-#hypothesis.settings.load_profile(os.getenv("HYPOTHESIS_PROFILE", "default"))
-hypothesis.settings.register_profile(
-    "ci",
-    database=None,
-    max_examples=1000,
-    suppress_health_check=[HealthCheck.too_slow],
-    deadline=None,
-)
-is_qemu = (
-    os.uname().machine == "ppc64le"
-    and os.getenv("CI") is not None
-)
-if is_qemu:
-    hypothesis.settings.load_profile("ci")
-else:
-    hypothesis.settings.load_profile(os.getenv("HYPOTHESIS_PROFILE", "default"))
+hypothesis.settings.load_profile(os.getenv("HYPOTHESIS_PROFILE", "default"))
+# hypothesis.settings.register_profile(
+#     "ci",
+#     database=None,
+#     max_examples=1000,
+#     suppress_health_check=[HealthCheck.too_slow],
+#     deadline=None,
+# )
+# is_qemu = (
+#     os.uname().machine == "ppc64le"
+#     and os.getenv("CI") is not None
+# )
+# if is_qemu:
+#     hypothesis.settings.load_profile("ci")
+# else:
+#     hypothesis.settings.load_profile(os.getenv("HYPOTHESIS_PROFILE", "default"))
 
 @pytest.fixture(autouse=True)
 def set_warnings() -> None:
