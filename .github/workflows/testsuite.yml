@@ -219,6 +219,7 @@ jobs:
             bash -exec "
               apt update -y && apt install gcc git build-essential -y
               git config --global --add safe.directory /work
+              git fetch origin main --depth=1
               python -m pip install -U pip setuptools wheel
               python -m pip install -r requirements/tox.pip 
               python -m tox -- -rfsEX
