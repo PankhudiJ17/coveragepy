@@ -218,6 +218,7 @@ jobs:
             ppc64le/python:${{ matrix.python-version }}-slim \
             bash -exec "
               apt update -y && apt install gcc git build-essential -y
+              git config --global --add safe.directory /work
               python -m pip install -U pip setuptools wheel
               python -m pip install -r requirements/tox.pip 
               python -m tox -- -rfsEX
