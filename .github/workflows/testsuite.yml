@@ -165,7 +165,7 @@ jobs:
   tests-ppc64le:
     name: "Tests on ppc64le (QEMU) ${{ matrix.python-version }}"
     runs-on: ubuntu-latest
-    timeout-minutes: 30
+    timeout-minutes: 40
 
     needs: changed
 
@@ -217,11 +217,10 @@ jobs:
             -w /work \
             ppc64le/python:${{ matrix.python-version }}-slim \
             bash -exec "
-              apt update -y && apt install gcc python3 python3-pip python3-venv -y
-              python3 -m venv venv
-              source venv/bin/activate
-              python3 -m pip install -r requirements/tox.pip 
-              python3 -m tox -- -rfsEX
+              apt update -y && apt install gcc build-essential -y
+              python -m pip install -U pip setuptools wheel
+              python -m pip install -r requirements/tox.pip 
+              python -m tox -- -rfsEX
             " 
     
       # - name: "Show environment"
