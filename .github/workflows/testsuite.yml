@@ -187,7 +187,7 @@ jobs:
 
     env:
       TOX_GH_MAJOR_MINOR: "${{ matrix.python-version }}"
-      
+
     strategy:
       matrix:
         python-version:
@@ -221,7 +221,9 @@ jobs:
           sudo add-apt-repository ppa:deadsnakes/ppa -y
           sudo apt update
           sudo apt install python${{ matrix.python-version }} python${{ matrix.python-version }}-venv python${{ matrix.python-version }}-dev -y
-          python${{ matrix.python-version }} -m ensurepip --upgrade
+          
+          pythom${{ matrix.python-version }} -m venv myvenv
+          source myvenv/bin/activate
           python${{ matrix.python-version }} -m pip install --upgrade pip
           python${{ matrix.python-version }} -m pip install cibuildwheel    
 
