@@ -56,7 +56,7 @@ jobs:
           #
           #   # For each OS, what arch to use with cibuildwheel:
           #   os_archs = {
-          #       "ubuntu": ["x86_64", "i686", "aarch64", "riscv64"],
+          #       "ubuntu": ["x86_64", "i686", "aarch64", "riscv64", "ppc64le"],
           #       "macos": ["arm64", "x86_64"],
           #       "windows": ["x86", "AMD64", "ARM64"],
           #   }
