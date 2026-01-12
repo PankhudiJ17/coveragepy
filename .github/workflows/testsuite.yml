@@ -185,6 +185,9 @@ jobs:
 
     needs: changed
 
+    env:
+      TOX_GH_MAJOR_MINOR: "${{ matrix.python-version }}"
+      
     strategy:
       matrix:
         python-version:
