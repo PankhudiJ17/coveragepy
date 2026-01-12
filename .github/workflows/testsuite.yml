@@ -217,7 +217,7 @@ jobs:
           sudo apt install software-properties-common -y
           sudo add-apt-repository ppa:deadsnakes/ppa -y
           sudo apt update
-          sudo apt install python${{ matrix.python-version }} python${{ matrix.python-version }}-venv python${{ matrix.python-version }}-distutils python${{ matrix.python-version }}-dev -y
+          sudo apt install python${{ matrix.python-version }} python${{ matrix.python-version }}-venv python${{ matrix.python-version }}-dev -y
           python${{ matrix.python-version }} -m ensurepip --upgrade
           python${{ matrix.python-version }} -m pip install --upgrade pip
           python${{ matrix.python-version }} -m pip install cibuildwheel    
