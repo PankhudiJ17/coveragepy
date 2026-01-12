@@ -200,8 +200,8 @@ jobs:
        #   - "pypy-3.10"
        #   - "pypy-3.11"
       
-        # arch:
-        #   - ppc64le 
+        arch:
+          - ppc64le 
       fail-fast: false 
     steps:
       - name: "Check out the repo"
@@ -233,20 +233,20 @@ jobs:
           #cache: pip
           #cache-dependency-path: 'requirements/*.pip'
 
-      - name: "Show environment"
-        run: |
-          set -xe
-          python -VV
-          python -m site
-          # For extreme debugging:
-          # python -c "import urllib.request as r; exec(r.urlopen('https://bit.ly/pydoctor').read())"
-          env | sort
-          # Ideally, the system Python wouldn't have writable sitepackages so
-          # try to make it not writable.  We can't always always change the
-          # permissions (Ubuntu & Windows yes, Mac no), so be ready for it to fail.
-          chmod u-w $(python -c "import site; print(site.getsitepackages()[0])") || echo "Couldn't lock down site-packages"
-          ls -ld $(python -c "import site; print(site.getsitepackages()[0])")
-          whoami
+      # - name: "Show environment"
+      #   run: |
+      #     set -xe
+      #     python -VV
+      #     python -m site
+      #     # For extreme debugging:
+      #     # python -c "import urllib.request as r; exec(r.urlopen('https://bit.ly/pydoctor').read())"
+      #     env | sort
+      #     # Ideally, the system Python wouldn't have writable sitepackages so
+      #     # try to make it not writable.  We can't always always change the
+      #     # permissions (Ubuntu & Windows yes, Mac no), so be ready for it to fail.
+      #     chmod u-w $(python -c "import site; print(site.getsitepackages()[0])") || echo "Couldn't lock down site-packages"
+      #     ls -ld $(python -c "import site; print(site.getsitepackages()[0])")
+      #     whoami
 
       - name: "Install dependencies"
         run: |
