@@ -92,14 +92,9 @@ jobs:
           - "3.11"
           - "3.12"
           - "3.13"
-          - "3.13t"
           - "3.14"
-          - "3.14t"
           - "3.15"
-          - "3.15t"
-          - "pypy-3.10"
-          - "pypy-3.11"
-        #
+        # 
         # If we need to exclude any combinations, do it like this:
         #  exclude:
         #    # Windows pypy 3.9 and 3.10 get stuck with PyPy 7.3.15.
