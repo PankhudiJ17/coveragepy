@@ -68,7 +68,7 @@ jobs:
     #   && fromJSON('["self-hosted", "linux", "ppc64le"]')
     #   || fromJSON(format('["{0}-{1}"]', matrix.os, matrix.os-version || 'latest'))
     # }}
-    runs-on: ${{ matrix.arch == 'ppc64le' && fromJSON('["self-hosted"]') || fromJSON(format('["{0}-{1}"]', matrix.os, matrix.os-version || 'latest'))}}  #"${{ matrix.os }}-${{ matrix.os-version || 'latest' }}"
+    runs-on: ${{ matrix.arch == 'ppc64le' && fromJSON('["self-hosted", "linux", "ppc64le"]') || fromJSON(format('["{0}-{1}"]', matrix.os, matrix.os-version || 'latest'))}}  #"${{ matrix.os }}-${{ matrix.os-version || 'latest' }}"
     timeout-minutes: 10
 
     # Don't run tests if the branch name includes "-notests".
