@@ -60,7 +60,9 @@ jobs:
               - "tests/gold/**"
 
   tests:
-    name: "${{ matrix.python-version }} on ${{ matrix.os }}"
+    name: >
+      ${{ matrix.os }}-${{ matrix.os-version }}
+      ${{ matrix.arch == 'ppc64le' && '(ppc64le)' || '' }}
     runs-on: "${{ matrix.arch == 'ppc64le'
       && 'self-hosted'
       || format('{0}-{1}', matrix.os, matrix.os-version) }}" 
