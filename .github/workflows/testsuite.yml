@@ -102,6 +102,9 @@ jobs:
           - "3.15t"
           - "pypy-3.10"
           - "pypy-3.11"
+
+        arch: 
+          - ppc64le  
         
         include:
       # PPC64LE only – no duplication of x64 entries
