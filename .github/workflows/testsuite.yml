@@ -21,7 +21,7 @@ env:
   COVERAGE_IGOR_VERBOSE: 2
   FORCE_COLOR: 1    # Get colored pytest output
   HYPOTHESIS_PROFILE: ci
-  UNSUPPORTED_PPC64LE: "3.13t 3.14t 3.15t"
+  #UNSUPPORTED_PPC64LE: "3.13t 3.14t 3.15t"
 
 permissions:
   contents: read
@@ -135,6 +135,7 @@ jobs:
 
       # Self-hosted ppc64le
       - name: "Install Python (ppc64le)"
+        if: ${{ matrix.os == 'ppc64le' }} 
         #if: ${{ !(matrix.os == 'ppc64le' && contains(env.UNSUPPORTED_PPC64LE, matrix.python-version)) }}
         run: |
           sudo apt update
