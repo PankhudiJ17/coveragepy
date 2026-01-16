@@ -135,7 +135,7 @@ jobs:
 
       # Self-hosted ppc64le
       - name: "Install Python (ppc64le)"
-        if: ${{ !(matrix.os == 'ppc64le' && contains(env.UNSUPPORTED_PPC64LE, matrix.python-version)) }}
+        #if: ${{ !(matrix.os == 'ppc64le' && contains(env.UNSUPPORTED_PPC64LE, matrix.python-version)) }}
         run: |
           sudo apt update
           sudo apt install software-properties-common -y
@@ -164,13 +164,13 @@ jobs:
           whoami
 
       - name: "Install dependencies"
-        if: ${{ !(matrix.os == 'ppc64le' && contains(env.UNSUPPORTED_PPC64LE, matrix.python-version)) }}
+        #if: ${{ !(matrix.os == 'ppc64le' && contains(env.UNSUPPORTED_PPC64LE, matrix.python-version)) }}
         run: |
           set -xe
           python -m pip install -r requirements/tox.pip
 
       - name: "Run tox for ${{ matrix.python-version }}"
-        if: ${{ !(matrix.os == 'ppc64le' && contains(env.UNSUPPORTED_PPC64LE, matrix.python-version)) }}
+        #if: ${{ !(matrix.os == 'ppc64le' && contains(env.UNSUPPORTED_PPC64LE, matrix.python-version)) }}
         run: |
           python -m tox -- -rfsEX
 
