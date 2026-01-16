@@ -21,6 +21,7 @@ env:
   COVERAGE_IGOR_VERBOSE: 2
   FORCE_COLOR: 1    # Get colored pytest output
   HYPOTHESIS_PROFILE: ci
+  UNSUPPORTED_PPC64LE: "3.13t 3.14t 3.15t"
 
 permissions:
   contents: read
@@ -134,12 +135,12 @@ jobs:
 
       # Self-hosted ppc64le
       - name: "Install Python (ppc64le)"
-        if: ${{ matrix.os == 'ppc64le' }}
+        if: ${{ !(matrix.os == 'ppc64le' && contains(env.UNSUPPORTED_PPC64LE, matrix.python-version)) }}
         run: |
           sudo apt update
-          # sudo apt install software-properties-common -y
-          # sudo add-apt-repository ppa:deadsnakes/ppa -y
-          # sudo apt update
+          sudo apt install software-properties-common -y
+          sudo add-apt-repository ppa:deadsnakes/ppa -y
+          sudo apt update
           sudo apt install python${{ matrix.python-version }} \
                            python${{ matrix.python-version }}-venv \
                            python${{ matrix.python-version }}-dev -y
@@ -163,11 +164,13 @@ jobs:
           whoami
 
       - name: "Install dependencies"
+        if: ${{ !(matrix.os == 'ppc64le' && contains(env.UNSUPPORTED_PPC64LE, matrix.python-version)) }}
         run: |
           set -xe
           python -m pip install -r requirements/tox.pip
 
       - name: "Run tox for ${{ matrix.python-version }}"
+        if: ${{ !(matrix.os == 'ppc64le' && contains(env.UNSUPPORTED_PPC64LE, matrix.python-version)) }}
         run: |
           python -m tox -- -rfsEX
 
