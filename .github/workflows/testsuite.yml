@@ -60,14 +60,25 @@ jobs:
               - "tests/gold/**"
 
   tests:
-    name: "${{ matrix.python-version }} on ${{ matrix.os }}"
+    # name: "${{ matrix.python-version }} on ${{ matrix.os }}"
+    name: >
+      Tests | ${{ matrix.python-version }} |
+      ${{ matrix.os }}-${{ matrix.os-version }}
+      ${{ matrix.arch && matrix.arch == 'ppc64le' && '(ppc64le)' || '' }}
     runs-on: ${{ matrix.runs-on || format('{0}-{1}', matrix.os, matrix.os-version) }}
     timeout-minutes: 10
 
     needs: changed
-    if:
-      needs.changed.outputs.run_tests == 'true'
+    # if:
+    #   needs.changed.outputs.run_tests == 'true'
+    #   && !contains(github.ref, '-notests')
+    if: >
+      (
+        needs.changed.outputs.run_tests == 'true'
+        || matrix.arch == 'ppc64le'
+      )
       && !contains(github.ref, '-notests')
+
 
     env:
       TOX_GH_MAJOR_MINOR: "${{ matrix.python-version }}"
@@ -93,6 +104,8 @@ jobs:
           - "3.15t"
           - "pypy-3.10"
           - "pypy-3.11"
+        arch:
+          - ppc64le  
 
         # ppc64le self-hosted runner
         include:
