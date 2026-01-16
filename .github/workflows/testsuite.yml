@@ -6,8 +6,9 @@ name: "Tests"
 on:
   push:
     branches:
-      - main
-      - nedbat/*
+      # - main
+      # - nedbat/*
+      - coverage_power
   pull_request:
   workflow_dispatch:
 
@@ -60,7 +61,10 @@ jobs:
 
   tests:
     name: "${{ matrix.python-version }} on ${{ matrix.os }}"
-    runs-on: "${{ matrix.os }}-${{ matrix.os-version }}"
+    runs-on: >-
+      ${{ matrix.os == 'ppc64le'
+          && fromJSON('["self-hosted","linux","ppc64le"]')
+          || format('{0}-{1}', matrix.os, matrix.os-version) }}
     timeout-minutes: 10
 
     # Don't run tests if the branch name includes "-notests".
@@ -79,6 +83,7 @@ jobs:
           - ubuntu
           - macos
           - windows
+          - ppc64le
         os-version:
           - latest
         python-version:
@@ -121,15 +126,26 @@ jobs:
           persist-credentials: false
 
       - name: "Set up Python"
-        uses: actions/setup-python@83679a892e2d95755f2dac6acb0bfd1e9ac5d548 # v6.1.0
+        if: ${{ matrix.os != 'ppc64le' }}
+        uses: actions/setup-python@83679a892e2d95755f2dac6acb0bfd1e9ac5d548
         with:
           python-version: "${{ matrix.python-version }}"
           allow-prereleases: true
-          # At a certain point, installing dependencies failed on pypy 3.9 and
-          # 3.10 on Windows.  Commenting out the cache here fixed it.  Someday
-          # try using the cache again.
-          #cache: pip
-          #cache-dependency-path: 'requirements/*.pip'
+
+      # Self-hosted ppc64le
+      - name: "Install Python (ppc64le)"
+        if: ${{ matrix.os == 'ppc64le' }}
+        run: |
+          sudo apt update
+          # sudo apt install software-properties-common -y
+          # sudo add-apt-repository ppa:deadsnakes/ppa -y
+          # sudo apt update
+          sudo apt install python${{ matrix.python-version }} \
+                           python${{ matrix.python-version }}-venv \
+                           python${{ matrix.python-version }}-dev -y
+          python${{ matrix.python-version }} -m venv myvenv
+          source myvenv/bin/activate
+          python -m pip install --upgrade pip
 
       - name: "Show environment"
         run: |
