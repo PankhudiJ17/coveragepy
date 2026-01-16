@@ -75,7 +75,7 @@ jobs:
     if: >
       (
         needs.changed.outputs.run_tests == 'true'
-        || matrix.arch == 'ppc64le'
+        || strategy.matrix.arch == 'ppc64le'
       )
       && !contains(github.ref, '-notests')
 
