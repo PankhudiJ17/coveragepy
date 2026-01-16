@@ -60,25 +60,14 @@ jobs:
               - "tests/gold/**"
 
   tests:
-    # name: "${{ matrix.python-version }} on ${{ matrix.os }}"
-    name: >
-      Tests | ${{ matrix.python-version }} |
-      ${{ matrix.os }}-${{ matrix.os-version }}
-      ${{ matrix.arch && matrix.arch == 'ppc64le' && '(ppc64le)' || '' }}
+    name: "${{ matrix.python-version }} on ${{ matrix.os }}"
     runs-on: ${{ matrix.runs-on || format('{0}-{1}', matrix.os, matrix.os-version) }}
     timeout-minutes: 10
 
     needs: changed
-    # if:
-    #   needs.changed.outputs.run_tests == 'true'
-    #   && !contains(github.ref, '-notests')
-    if: >
-      (
-        needs.changed.outputs.run_tests == 'true'
-        || strategy.matrix.arch == 'ppc64le'
-      )
+    if:
+      needs.changed.outputs.run_tests == 'true'
       && !contains(github.ref, '-notests')
-
 
     env:
       TOX_GH_MAJOR_MINOR: "${{ matrix.python-version }}"
