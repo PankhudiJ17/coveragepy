@@ -158,7 +158,7 @@ jobs:
           sudo apt install python${{ matrix.python-version }} \
                            python${{ matrix.python-version }}-venv \
                            python${{ matrix.python-version }}-dev -y \
-                           python${{ matrix.python-version }}-pip
+                           python3-pip
 
          # python${{ matrix.python-version }} -m venv myvenv
          # source myvenv/bin/activate
