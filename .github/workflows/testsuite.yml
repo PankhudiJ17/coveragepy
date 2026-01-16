@@ -148,12 +148,7 @@ jobs:
       # Self-hosted ppc64le
       - name: "Install Python (ppc64le)"
        # if: ${{ matrix.os == 'ppc64le' }} 
-        if: ${{ matrix.os == 'ppc64le'
-          && matrix.python-version != '3.13t'
-          && matrix.python-version != '3.14t'
-          && matrix.python-version != '3.15t'
-          && matrix.python-version != 'pypy-3.10'
-          && matrix.python-version != 'pypy-3.11' }}
+        if: ${{ matrix.os == 'ppc64le' && matrix.python-version != '3.13t' && matrix.python-version != '3.14t' && matrix.python-version != '3.15t' && matrix.python-version != 'pypy-3.10' && matrix.python-version != 'pypy-3.11' }}
         #if: ${{ !(matrix.os == 'ppc64le' && contains(env.UNSUPPORTED_PPC64LE, matrix.python-version)) }}
         run: |
           sudo apt update
@@ -183,14 +178,14 @@ jobs:
           whoami
 
       - name: "Install dependencies"
-        if: ${{ !(matrix.os == 'ppc64le' && (matrix.python-version == '3.13t' || matrix.python-version == '3.14t' || matrix.python-version == '3.15t')) }}
+        if: ${{ !(matrix.os == 'ppc64le' && (matrix.python-version == '3.13t' || matrix.python-version == '3.14t' || matrix.python-version == '3.15t' || matrix.python-version == 'pypy-3.10' || matrix.python-version == 'pypy-3.11' )) }}
         #if: ${{ !(matrix.os == 'ppc64le' && contains(env.UNSUPPORTED_PPC64LE, matrix.python-version)) }}
         run: |
           set -xe
           python -m pip install -r requirements/tox.pip
 
       - name: "Run tox for ${{ matrix.python-version }}"
-        if: ${{ !(matrix.os == 'ppc64le' && (matrix.python-version == '3.13t' || matrix.python-version == '3.14t' || matrix.python-version == '3.15t')) }}
+        if: ${{ !(matrix.os == 'ppc64le' && (matrix.python-version == '3.13t' || matrix.python-version == '3.14t' || matrix.python-version == '3.15t' || matrix.python-version == 'pypy-3.10' || matrix.python-version == 'pypy-3.11')) }}
 
         #if: ${{ !(matrix.os == 'ppc64le' && contains(env.UNSUPPORTED_PPC64LE, matrix.python-version)) }}
         run: |
