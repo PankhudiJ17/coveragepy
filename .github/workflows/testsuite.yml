@@ -157,10 +157,12 @@ jobs:
           sudo apt update
           sudo apt install python${{ matrix.python-version }} \
                            python${{ matrix.python-version }}-venv \
-                           python${{ matrix.python-version }}-dev -y
-          python${{ matrix.python-version }} -m venv myvenv
-          source myvenv/bin/activate
-          python -m pip install --upgrade pip
+                           python${{ matrix.python-version }}-dev -y \
+                           python${{ matrix.python-version }}-pip
+
+         # python${{ matrix.python-version }} -m venv myvenv
+         # source myvenv/bin/activate
+         # python -m pip install --upgrade pip
 
       - name: "Show environment"
         run: |
