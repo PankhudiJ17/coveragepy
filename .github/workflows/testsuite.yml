@@ -104,6 +104,14 @@ jobs:
           - "3.15t"
           - "pypy-3.10"
           - "pypy-3.11"
+
+        exclude:
+          - os: ppc64le
+            python-version: "3.13t"
+          - os: ppc64le
+            python-version: "3.14t"
+          - os: ppc64le
+            python-version: "3.15t"  
         #
         # If we need to exclude any combinations, do it like this:
         #  exclude:
