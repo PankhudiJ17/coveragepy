@@ -49,7 +49,7 @@ concurrency:
 jobs:
   wheels:
     name: "${{ matrix.py }} ${{ matrix.os }} ${{ matrix.arch }} wheels"
-    runs-on: "${{ (format('{0}-{1}', matrix.os, matrix.os-version || 'latest')) || (matrix.arch == 'ppc64le' && 'self-hosted') }}"
+    runs-on: ${{ (format('{0}-{1}', matrix.os, matrix.os-version || 'latest')) || (matrix.arch == 'ppc64le' && 'self-hosted') }}
     env:
       MATRIX_ID: "${{ matrix.py }}-${{ matrix.os }}-${{ matrix.arch }}"
     strategy:
