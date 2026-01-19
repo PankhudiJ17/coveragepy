@@ -210,8 +210,8 @@ jobs:
           sudo apt update
           sudo apt install python${{ matrix.python-version }} python${{ matrix.python-version }}-venv python${{ matrix.python-version }}-dev -y      
          
-          python${{ matrix.python-version}} -m ensurepip --upgrade
-          python${{ matrix.python-version }} -m pip install --upgrade pip setuptools wheel
+         # python${{ matrix.python-version}} -m ensurepip --upgrade
+          # python${{ matrix.python-version }} -m pip install --upgrade pip setuptools wheel
         
       - name: "Install dependencies"
         run: |
