@@ -31,7 +31,7 @@ concurrency:
 jobs:
   wheels:
     name: "${{ matrix.py }} ${{ matrix.os }} ${{ matrix.arch }} wheels"
-    runs-on: ${{ matrix.arch == 'ppc64le' && 'self-hosted' || (format('["{0}-{1}"]', matrix.os, matrix.os-version || 'latest'))}}  #"${{ matrix.os }}-${{ matrix.os-version || 'latest' }}"  #"${{ matrix.os }}-${{ matrix.os-version || 'latest' }}"
+    runs-on: ${{ matrix.arch == 'ppc64le' && 'self-hosted' || (format('{0}-{1}', matrix.os, matrix.os-version || 'latest'))}}  #"${{ matrix.os }}-${{ matrix.os-version || 'latest' }}"  #"${{ matrix.os }}-${{ matrix.os-version || 'latest' }}"
     env:
       MATRIX_ID: "${{ matrix.py }}-${{ matrix.os }}-${{ matrix.arch }}"
     strategy:
