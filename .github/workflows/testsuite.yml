@@ -208,15 +208,11 @@ jobs:
           sudo apt install software-properties-common gcc gfortran build-essential -y
           sudo add-apt-repository ppa:deadsnakes/ppa -y
           sudo apt update
-          sudo apt install python${{ matrix.python-version }} python${{ matrix.python-version }}-venv python${{ matrix.python-version }}-dev -y
+          sudo apt install python${{ matrix.python-version }} python${{ matrix.python-version }}-venv python${{ matrix.python-version }}-dev -y      
          
-         
-          python${{ matrix.python-version }} -m venv venv
-          source venv/bin/activate
-          python -m ensurepip --upgrade
-          python -m pip install --upgrade pip setuptools wheel
-          python -m pip install -r requirements/tox.pip
-         
+          python${{ matrix.python-version}} -m ensurepip --upgrade
+          python${{ matrix.python-version }} -m pip install --upgrade pip setuptools wheel
+        
       - name: "Install dependencies"
         run: |
           set -xe
@@ -225,7 +221,7 @@ jobs:
       - name: "Run tox for ${{ matrix.python-version }}"
         run: |
           python${{ matrix.python-version }} -m tox -- -rfsEX
-          
+
       - name: "Retry tox for ${{ matrix.python-version }}"
         if: failure()
         run: |
