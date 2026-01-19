@@ -202,7 +202,7 @@ jobs:
         with:
           persist-credentials: false
 
-      - name: "Install dependencies"
+      - name: "Install python dependencies"
         run: |
           sudo apt update
           sudo apt install software-properties-common -y
@@ -211,8 +211,9 @@ jobs:
           sudo apt install python${{ matrix.python-version }} python${{ matrix.python-version }}-venv python${{ matrix.python-version }}-dev -y
           python${{ matrix.python-version }} -m venv myvenv
           source myvenv/bin/activate
-          python${{ matrix.python-version }} -m pip install --upgrade pip
-          python${{ matrix.python-version }} -m pip install cibuildwheel
+          python -m ensurepip --upgrade
+          python -m pip install --upgrade pip
+          python -m pip install cibuildwheel
          
       - name: "Install dependencies"
         run: |
