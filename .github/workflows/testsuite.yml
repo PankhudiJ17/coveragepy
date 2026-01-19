@@ -220,7 +220,7 @@ jobs:
           python${{ matrix.python-version }} -m pip install -r requirements/tox.pip
       - name: "Run tox for ${{ matrix.python-version }}"
         run: |
-          pythpython${{ matrix.python-version }}on -m tox -- -rfsEX
+          pythpy${{ matrix.python-version }}on -m tox -- -rfsEX
       - name: "Retry tox for ${{ matrix.python-version }}"
         if: failure()
         run: |
