@@ -180,7 +180,7 @@ jobs:
 
     strategy:
       matrix:
-        matrix:
+        arch:
           - ppc64le
         python-version:
           - "3.10"
