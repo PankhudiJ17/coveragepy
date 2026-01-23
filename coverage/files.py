@@ -231,7 +231,7 @@ class Matcher(abc.ABC):
 
     def __str__(self) -> str:
         n = len(self.strs)
-        return f"{self.__class__.__name__} {self.name!r} {n} {plural(n, 'item')}"
+        return f"{self.__class__.__name__} {self.name!r} {plural(n, 'item')}"
 
     def __repr__(self) -> str:
         return f"<{self.__class__.__name__} {self.name} {self.strs!r}>"

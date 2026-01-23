@@ -241,9 +241,9 @@ def debug_data_file(filename: str) -> None:
     summary = line_counts(data, fullpath=True)
     filenames = human_sorted(summary.keys())
     nfiles = len(filenames)
-    print(f"{nfiles} file{plural(nfiles)}:")
+    print(f"{plural(nfiles, 'file')}:")
     for f in filenames:
-        line = f"{f}: {summary[f]} line{plural(summary[f])}"
+        line = f"{f}: {plural(summary[f], 'line')}"
         plugin = data.file_tracer(f)
         if plugin:
             line += f" [{plugin}]"
