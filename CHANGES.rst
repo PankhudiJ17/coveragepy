@@ -20,8 +20,12 @@ upgrading your version of coverage.py.
     ..  Version 9.8.1 — 2027-07-27
     ..  --------------------------
 
-Unreleased
-----------
+.. start-releases
+
+.. _changes_7-13-2:
+
+Version 7.13.2 — 2026-01-25
+---------------------------
 
 - Fix: when Python is installed via symlinks, for example with Homebrew, the
   standard library files could be incorrectly included in coverage reports.
@@ -34,8 +38,6 @@ Unreleased
 .. _issue 2115: https://github.com/coveragepy/coveragepy/issues/2115
 .. _issue 2117: https://github.com/coveragepy/coveragepy/issues/2117
 
-
-.. start-releases
 
 .. _changes_7-13-1:
 
