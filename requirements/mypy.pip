@@ -12,11 +12,11 @@ execnet==2.1.2
     # via pytest-xdist
 flaky==3.8.1
     # via -r requirements/pytest.in
-hypothesis==6.150.0
+hypothesis==6.150.2
     # via -r requirements/pytest.in
 iniconfig==2.3.0
     # via pytest
-librt==0.7.7 ; platform_python_implementation != 'PyPy'
+librt==0.7.8 ; platform_python_implementation != 'PyPy'
     # via mypy
 mypy==1.19.1
     # via -r requirements/mypy.in
@@ -24,7 +24,7 @@ mypy-extensions==1.1.0
     # via mypy
 packaging==25.0
     # via pytest
-pathspec==1.0.2
+pathspec==1.0.3
     # via mypy
 pluggy==1.6.0
     # via pytest
@@ -40,7 +40,7 @@ pytest-xdist==3.8.0
     # via -r requirements/pytest.in
 sortedcontainers==2.4.0
     # via hypothesis
-tomli==2.3.0 ; python_full_version < '3.11'
+tomli==2.4.0 ; python_full_version < '3.11'
     # via
     #   mypy
     #   pytest

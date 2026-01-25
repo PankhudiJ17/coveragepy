@@ -66,7 +66,7 @@ pygments==2.19.2
     # via
     #   doc8
     #   sphinx
-regex==2025.11.3
+regex==2026.1.15
     # via sphinx-lint
 requests==2.32.5
     # via
@@ -76,14 +76,22 @@ requests==2.32.5
 restructuredtext-lint==2.0.2
     # via doc8
 roman-numerals==4.1.0
-    # via roman-numerals-py
-roman-numerals-py==4.1.0
     # via sphinx
 scriv==1.8.0
     # via -r doc/requirements.in
 snowballstemmer==3.0.1
     # via sphinx
-sphinx==8.2.3
+sphinx==9.0.4 ; python_full_version < '3.12'
+    # via
+    #   -r doc/requirements.in
+    #   sphinx-autobuild
+    #   sphinx-code-tabs
+    #   sphinx-rtd-theme
+    #   sphinxcontrib-jquery
+    #   sphinxcontrib-restbuilder
+    #   sphinxcontrib-spelling
+    #   sphinxext-rediraffe
+sphinx==9.1.0 ; python_full_version >= '3.12'
     # via
     #   -r doc/requirements.in
     #   sphinx-autobuild
@@ -99,7 +107,7 @@ sphinx-code-tabs==0.5.5
     # via -r doc/requirements.in
 sphinx-lint==1.0.2
     # via -r doc/requirements.in
-sphinx-rtd-theme==3.0.2
+sphinx-rtd-theme==3.1.0
     # via
     #   -c doc/../requirements/pins.pip
     #   -r doc/requirements.in
@@ -123,7 +131,7 @@ sphinxcontrib-spelling==8.0.2
     # via -r doc/requirements.in
 sphinxext-rediraffe==0.3.0
     # via -r doc/requirements.in
-starlette==0.50.0
+starlette==0.51.0
     # via sphinx-autobuild
 stevedore==5.6.0
     # via doc8
@@ -137,5 +145,5 @@ uvicorn==0.40.0
     # via sphinx-autobuild
 watchfiles==1.1.1
     # via sphinx-autobuild
-websockets==15.0.1
+websockets==16.0
     # via sphinx-autobuild
