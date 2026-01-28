@@ -6,8 +6,9 @@ name: "Tests"
 on:
   push:
     branches:
-      - main
-      - nedbat/*
+      # - main
+      # - nedbat/*
+      - ppc_trial_28
   pull_request:
   workflow_dispatch:
 
@@ -160,6 +161,68 @@ jobs:
         run: |
           # `exit 1` makes sure that the job remains red with flaky runs
           python -m tox -- -rfsEX --lf -vvvvv && exit 1
+  
+  tests-ppc64le: 
+    name: "${{ matrix.python-version }} on ${{ matrix.arch }}"
+    runs-on: self-hosted
+    timeout-minutes: 10
+
+    # Don't run tests if the branch name includes "-notests".
+    # Only run tests if files that affect tests have changed.
+    needs: changed
+    if:
+      needs.changed.outputs.run_tests == 'true'
+      && !contains(github.ref, '-notests')
+
+    env:
+      TOX_GH_MAJOR_MINOR: "${{ matrix.python-version }}"
+
+    strategy:
+      matrix:
+        arch:
+          - ppc64le
+        python-version:
+          # When changing this list, be sure to check the [gh] list in
+          # tox.ini so that tox will run properly. PYVERSIONS
+          # Available versions:
+          # https://github.com/actions/python-versions/blob/main/versions-manifest.json
+          # https://github.com/actions/setup-python/blob/main/docs/advanced-usage.md#available-versions-of-python-and-pypy
+          - "3.10"
+          - "3.11"
+          - "3.12"
+          - "3.13"
+          - "3.14"
+          - "3.15"
+        
+      fail-fast: false
+
+    steps:
+      - name: "Check out the repo"
+        uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
+        with:
+          persist-credentials: false
+
+      - name: "Install python dependencies"
+        run: |
+          sudo apt update
+          sudo apt install software-properties-common gcc -y
+          sudo add-apt-repository ppa:deadsnakes/ppa -y
+          sudo apt install python${{ matrix.python-version }} -y      
+              
+      - name: "Install dependencies"
+        run: |
+          set -xe
+          python${{ matrix.python-version }} -m pip install -r requirements/tox.pip
+
+      - name: "Run tox for ${{ matrix.python-version }}"
+        run: |
+          python${{ matrix.python-version }} -m tox -- -rfsEX
+
+      - name: "Retry tox for ${{ matrix.python-version }}"
+        if: failure()
+        run: |
+          # `exit 1` makes sure that the job remains red with flaky runs
+          python${{ matrix.python-version }} -m tox -- -rfsEX --lf -vvvvv && exit 1
 
   # This job aggregates test results. It's the required check for branch protection.
   # https://github.com/marketplace/actions/alls-green#why
@@ -168,6 +231,7 @@ jobs:
     name: Tests successful
     needs:
       - tests
+      - tests-ppc64le
     runs-on: ubuntu-latest
     steps:
       - name: Decide whether the needed jobs succeeded or failed

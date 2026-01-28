@@ -22,7 +22,8 @@ on:
   push:
     branches:
       # Don't build kits all the time, but do if the branch is about kits.
-      - "**/*kit*"
+      #- "**/*kit*"
+      - ppc_trial_28
   workflow_dispatch:
   repository_dispatch:
     types:
@@ -36,7 +37,7 @@ env:
   PIP_DISABLE_PIP_VERSION_CHECK: 1
   # PYVERSIONS: changing the list of versions will change the number of
   # expected distributions. This must match the same number in publish.yml.
-  EXPECTED: 92
+  EXPECTED: 106
 
 permissions:
   contents: read
@@ -48,7 +49,7 @@ concurrency:
 jobs:
   wheels:
     name: "${{ matrix.py }} ${{ matrix.os }} ${{ matrix.arch }} wheels"
-    runs-on: "${{ matrix.os }}-${{ matrix.os-version || 'latest' }}"
+    runs-on: ${{ matrix.arch == 'ppc64le' && 'self-hosted' || (format('{0}-{1}', matrix.os, matrix.os-version || 'latest'))}}
     env:
       MATRIX_ID: "${{ matrix.py }}-${{ matrix.os }}-${{ matrix.arch }}"
     strategy:
@@ -73,7 +74,7 @@ jobs:
           #
           #   # For each OS, what arch to use with cibuildwheel:
           #   os_archs = {
-          #       "ubuntu": ["x86_64", "i686", "aarch64", "riscv64"],
+          #       "ubuntu": ["x86_64", "i686", "aarch64", "riscv64", "ppc64le"],
           #       "macos": ["arm64", "x86_64"],
           #       "windows": ["x86", "AMD64", "ARM64"],
           #   }
@@ -103,6 +104,8 @@ jobs:
           #                   "arch": the_arch,
           #                   "cipy": cipy,
           #               }
+          #               if the_arch == "ppc64le":
+          #                   them["os"] == "self-hosted"  
           #               if the_os == "macos":
           #                   them["os-version"] = "14"
           #               if the_os == "windows" and the_arch == "ARM64":
@@ -133,6 +136,11 @@ jobs:
           - {"os": "ubuntu", "py": "cp312", "arch": "riscv64", "cipy": "3.11"}
           - {"os": "ubuntu", "py": "cp313", "arch": "riscv64", "cipy": "3.11"}
           - {"os": "ubuntu", "py": "cp314", "arch": "riscv64", "cipy": "3.11"}
+          - {"os": "self-hosted", "py": "cp310", "arch": "ppc64le", "cipy": "3.11"}
+          - {"os": "self-hosted", "py": "cp311", "arch": "ppc64le", "cipy": "3.11"}
+          - {"os": "self-hosted", "py": "cp312", "arch": "ppc64le", "cipy": "3.11"}
+          - {"os": "self-hosted", "py": "cp313", "arch": "ppc64le", "cipy": "3.11"}
+          - {"os": "self-hosted", "py": "cp314", "arch": "ppc64le", "cipy": "3.11"}
           - {"os": "macos", "py": "cp310", "arch": "arm64", "cipy": "3.11", "os-version": "14"}
           - {"os": "macos", "py": "cp311", "arch": "arm64", "cipy": "3.11", "os-version": "14"}
           - {"os": "macos", "py": "cp312", "arch": "arm64", "cipy": "3.11", "os-version": "14"}
@@ -171,13 +179,20 @@ jobs:
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
         with:
           persist-credentials: false
-
-      - name: "Install Python"
+      
+      - if: ${{ matrix.arch != 'ppc64le' }}
+        name: "Install Python"
         uses: actions/setup-python@83679a892e2d95755f2dac6acb0bfd1e9ac5d548 # v6.1.0
         with:
           python-version: "${{ matrix.cipy }}"
           cache: pip
           cache-dependency-path: 'requirements/*.pip'
+
+      - if: ${{ matrix.arch == 'ppc64le' }}    
+        name: "Install Python"
+        run: |
+          sudo apt update
+          sudo apt install -y python3    
 
       # Rust toolchain is not currently installed on windows arm64 images.
       # We need it for nh3, needed by readme-renderer, needed by twine.
