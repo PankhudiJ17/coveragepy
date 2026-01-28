@@ -74,7 +74,7 @@ jobs:
           #
           #   # For each OS, what arch to use with cibuildwheel:
           #   os_archs = {
-          #       "ubuntu": ["x86_64", "i686", "aarch64", "riscv64"],
+          #       "ubuntu": ["x86_64", "i686", "aarch64", "riscv64", "ppc64le"],
           #       "macos": ["arm64", "x86_64"],
           #       "windows": ["x86", "AMD64", "ARM64"],
           #   }
@@ -104,6 +104,8 @@ jobs:
           #                   "arch": the_arch,
           #                   "cipy": cipy,
           #               }
+          #               if the_arch == "ppc64le":
+          #                   them["os"] = "self-hosted"
           #               if the_os == "macos":
           #                   them["os-version"] = "14"
           #               if the_os == "windows" and the_arch == "ARM64":
@@ -158,11 +160,11 @@ jobs:
           - {"os": "windows", "py": "cp312", "arch": "ARM64", "cipy": "3.11", "os-version": "11-arm"}
           - {"os": "windows", "py": "cp313", "arch": "ARM64", "cipy": "3.11", "os-version": "11-arm"}
           - {"os": "windows", "py": "cp314", "arch": "ARM64", "cipy": "3.11", "os-version": "11-arm"}
-          - {"os": "self-hosted", "py": "cp310", "arch": "ppc64le", "cipy": "3.11"}
-          - {"os": "self-hosted", "py": "cp311", "arch": "ppc64le", "cipy": "3.11"}
-          - {"os": "self-hosted", "py": "cp312", "arch": "ppc64le", "cipy": "3.11"}
-          - {"os": "self-hosted", "py": "cp313", "arch": "ppc64le", "cipy": "3.11"}
-          - {"os": "self-hosted", "py": "cp314", "arch": "ppc64le", "cipy": "3.11"}
+          # - {"os": "self-hosted", "py": "cp310", "arch": "ppc64le", "cipy": "3.11"}
+          # - {"os": "self-hosted", "py": "cp311", "arch": "ppc64le", "cipy": "3.11"}
+          # - {"os": "self-hosted", "py": "cp312", "arch": "ppc64le", "cipy": "3.11"}
+          # - {"os": "self-hosted", "py": "cp313", "arch": "ppc64le", "cipy": "3.11"}
+          # - {"os": "self-hosted", "py": "cp314", "arch": "ppc64le", "cipy": "3.11"}
         # [[[end]]] (sum: UDdYTxMoTi)
         #            ^^^^^^^^^^^^^^^
         # If a check fails and points to this checksum line, it means you edited
