@@ -190,12 +190,12 @@ jobs:
           cache: pip
           cache-dependency-path: 'requirements/*.pip'
       
-      - if: ${{ matrix.arch == 'ppc64le' }}
-        name: Set up Python
-        uses: IBM/setup-python-pz@v6
-        with:
-          python-version: "${{ matrix.python-version }}"
-          architecture: ppc64le
+      # - if: ${{ matrix.arch == 'ppc64le' }}
+      #   name: Set up Python
+      #   uses: IBM/setup-python-pz@4ca38bfac8eac147e9c7aad9ab246f68655afb36
+      #   with:
+      #     python-version: "${{ matrix.python-version }}"
+      #     architecture: ppc64le
 
       # Rust toolchain is not currently installed on windows arm64 images.
       # We need it for nh3, needed by readme-renderer, needed by twine.

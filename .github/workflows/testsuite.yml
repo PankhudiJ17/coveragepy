@@ -152,10 +152,10 @@ jobs:
       
       - if: ${{ matrix.os == 'ppc64le' }}
         name: Set up Python
-        uses: IBM/setup-python-pz@v6
+        uses: IBM/setup-python-pz@4ca38bfac8eac147e9c7aad9ab246f68655afb36
         with:
           python-version: "${{ matrix.python-version }}"
-          architecture: ppc64le 
+          architecture: ppc64le
 
       - name: "Show environment"
         run: |
