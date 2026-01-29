@@ -99,6 +99,8 @@ jobs:
           - "3.15t"
           - "pypy-3.10"
           - "pypy-3.11"
+        arch:
+          - ppc64le  
         #
         # If we need to exclude any combinations, do it like this:
         #  exclude:
@@ -121,11 +123,19 @@ jobs:
         with:
           persist-credentials: false
 
-      - name: "Set up Python"
+      - if: ${{ matrix.arch != 'ppc64le' }}
+        name: "Set up Python"
         uses: actions/setup-python@83679a892e2d95755f2dac6acb0bfd1e9ac5d548 # v6.1.0
         with:
           python-version: "${{ matrix.python-version }}"
           allow-prereleases: true
+
+      - if: ${{ matrix.arch == 'ppc64le' }}
+        name: Set up Python
+        uses: IBM/setup-python-pz@main
+        with:
+          python-version: "${{ matrix.python-version }}"
+          architecture: ppc64le
           # At a certain point, installing dependencies failed on pypy 3.9 and
           # 3.10 on Windows.  Commenting out the cache here fixed it.  Someday
           # try using the cache again.
@@ -162,87 +172,87 @@ jobs:
           # `exit 1` makes sure that the job remains red with flaky runs
           python -m tox -- -rfsEX --lf -vvvvv && exit 1
   
-  tests-ppc64le: 
-    name: "${{ matrix.python-version }} on ${{ matrix.arch }}"
-    runs-on: self-hosted
-    timeout-minutes: 10
+  # tests-ppc64le: 
+  #   name: "${{ matrix.python-version }} on ${{ matrix.arch }}"
+  #   runs-on: self-hosted
+  #   timeout-minutes: 10
 
-    # Don't run tests if the branch name includes "-notests".
-    # Only run tests if files that affect tests have changed.
-    needs: changed
-    if:
-      needs.changed.outputs.run_tests == 'true'
-      && !contains(github.ref, '-notests')
+  #   # Don't run tests if the branch name includes "-notests".
+  #   # Only run tests if files that affect tests have changed.
+  #   needs: changed
+  #   if:
+  #     needs.changed.outputs.run_tests == 'true'
+  #     && !contains(github.ref, '-notests')
 
-    env:
-      TOX_GH_MAJOR_MINOR: "${{ matrix.python-version }}"
+  #   env:
+  #     TOX_GH_MAJOR_MINOR: "${{ matrix.python-version }}"
 
-    strategy:
-      matrix:
-        arch:
-          - ppc64le
-        python-version:
-          # When changing this list, be sure to check the [gh] list in
-          # tox.ini so that tox will run properly. PYVERSIONS
-          # Available versions:
-          # https://github.com/actions/python-versions/blob/main/versions-manifest.json
-          # https://github.com/actions/setup-python/blob/main/docs/advanced-usage.md#available-versions-of-python-and-pypy
-          - "3.10"
-          - "3.11"
-          - "3.12"
-          - "3.13"
-          - "3.13t"
-          - "3.14"
-          - "3.14t"
-          - "3.15"
-          - "3.15t"
-          - "pypy-3.10"
-          - "pypy-3.11"
+  #   strategy:
+  #     matrix:
+  #       arch:
+  #         - ppc64le
+  #       python-version:
+  #         # When changing this list, be sure to check the [gh] list in
+  #         # tox.ini so that tox will run properly. PYVERSIONS
+  #         # Available versions:
+  #         # https://github.com/actions/python-versions/blob/main/versions-manifest.json
+  #         # https://github.com/actions/setup-python/blob/main/docs/advanced-usage.md#available-versions-of-python-and-pypy
+  #         - "3.10"
+  #         - "3.11"
+  #         - "3.12"
+  #         - "3.13"
+  #         - "3.13t"
+  #         - "3.14"
+  #         - "3.14t"
+  #         - "3.15"
+  #         - "3.15t"
+  #         - "pypy-3.10"
+  #         - "pypy-3.11"
         
-      fail-fast: false
+  #     fail-fast: false
 
-    steps:
-      - name: "Check out the repo"
-        uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
-        with:
-          persist-credentials: false
+  #   steps:
+  #     - name: "Check out the repo"
+  #       uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
+  #       with:
+  #         persist-credentials: false
       
       
-      # - uses: actions/checkout@v5
-      # - uses: ibm/setup-pz@v6
-      #   with:
-      #     architecture: ppc64le
-      #     python-version: "${{ matrix.python-version }}"
-      # - run: python my_script.py 
+  #     # - uses: actions/checkout@v5
+  #     # - uses: ibm/setup-pz@v6
+  #     #   with:
+  #     #     architecture: ppc64le
+  #     #     python-version: "${{ matrix.python-version }}"
+  #     # - run: python my_script.py 
 
-      - name: Set up Python
-        uses: IBM/setup-python-pz@main
-        with:
-          python-version: "${{ matrix.python-version }}"
-          architecture: ppc64le
+  #     - name: Set up Python
+  #       uses: IBM/setup-python-pz@main
+  #       with:
+  #         python-version: "${{ matrix.python-version }}"
+  #         architecture: ppc64le
 
 
-      # - name: "Install python dependencies"
-      #   run: |
-      #     sudo apt update
-      #     sudo apt install software-properties-common gcc -y
-      #     sudo add-apt-repository ppa:deadsnakes/ppa -y
-      #     sudo apt install python${{ matrix.python-version }} -y      
+  #     # - name: "Install python dependencies"
+  #     #   run: |
+  #     #     sudo apt update
+  #     #     sudo apt install software-properties-common gcc -y
+  #     #     sudo add-apt-repository ppa:deadsnakes/ppa -y
+  #     #     sudo apt install python${{ matrix.python-version }} -y      
               
-      - name: "Install dependencies"
-        run: |
-          set -xe
-          python${{ matrix.python-version }} -m pip install -r requirements/tox.pip
+  #     - name: "Install dependencies"
+  #       run: |
+  #         set -xe
+  #         python${{ matrix.python-version }} -m pip install -r requirements/tox.pip
 
-      - name: "Run tox for ${{ matrix.python-version }}"
-        run: |
-          python${{ matrix.python-version }} -m tox -- -rfsEX
+  #     - name: "Run tox for ${{ matrix.python-version }}"
+  #       run: |
+  #         python${{ matrix.python-version }} -m tox -- -rfsEX
 
-      - name: "Retry tox for ${{ matrix.python-version }}"
-        if: failure()
-        run: |
-          # `exit 1` makes sure that the job remains red with flaky runs
-          python${{ matrix.python-version }} -m tox -- -rfsEX --lf -vvvvv && exit 1
+  #     - name: "Retry tox for ${{ matrix.python-version }}"
+  #       if: failure()
+  #       run: |
+  #         # `exit 1` makes sure that the job remains red with flaky runs
+  #         python${{ matrix.python-version }} -m tox -- -rfsEX --lf -vvvvv && exit 1
 
   # This job aggregates test results. It's the required check for branch protection.
   # https://github.com/marketplace/actions/alls-green#why
@@ -251,7 +261,7 @@ jobs:
     name: Tests successful
     needs:
       - tests
-      - tests-ppc64le
+      #- tests-ppc64le
     runs-on: ubuntu-latest
     steps:
       - name: Decide whether the needed jobs succeeded or failed
