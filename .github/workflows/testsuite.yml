@@ -100,7 +100,7 @@ jobs:
           - "pypy-3.10"
           - "pypy-3.11"
         arch:
-          - ppc64le  
+          - "ppc64le"  
         #
         # If we need to exclude any combinations, do it like this:
         #  exclude:
@@ -131,7 +131,7 @@ jobs:
           allow-prereleases: true
 
       - if: ${{ matrix.arch == 'ppc64le' }}
-        name: Set up Python
+        name: "Set up Python"
         uses: IBM/setup-python-pz@main
         with:
           python-version: "${{ matrix.python-version }}"
