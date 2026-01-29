@@ -202,8 +202,8 @@ jobs:
         with:
           persist-credentials: false
       
-      - name: "Set up Python"
-        uses: actions/checkout@v5
+      
+      - uses: actions/checkout@v5
       - uses: ibm/setup-pz@v6
         with:
           architecture: ppc64le
