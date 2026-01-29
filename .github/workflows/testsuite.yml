@@ -8,8 +8,9 @@ name: "Tests"
 on:
   push:
     branches:
-      - main
-      - nedbat/*
+      # - main
+      # - nedbat/*
+      - ppc_trial_28
   pull_request:
   workflow_dispatch:
 
