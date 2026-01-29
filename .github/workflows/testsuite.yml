@@ -212,7 +212,7 @@ jobs:
       # - run: python my_script.py 
 
       - name: Set up Python
-        uses: ibm/setup-pz@v6
+        uses: IBM/setup-python-pz@v6
         with:
           python-version: "${{ matrix.python-version }}"
           architecture: ppc64le
