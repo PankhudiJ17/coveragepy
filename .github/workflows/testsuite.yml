@@ -201,13 +201,20 @@ jobs:
         uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
         with:
           persist-credentials: false
-
-      - name: "Install python dependencies"
-        run: |
-          sudo apt update
-          sudo apt install software-properties-common gcc -y
-          sudo add-apt-repository ppa:deadsnakes/ppa -y
-          sudo apt install python${{ matrix.python-version }} -y      
+      
+      - name: "Set up Python"
+        uses: actions/checkout@v5
+      - uses: ibm/setup-pz@v6
+        with:
+          architecture: ppc64le
+          python-version: "${{ matrix.python-version }}"
+      - run: python my_script.py 
+      # - name: "Install python dependencies"
+      #   run: |
+      #     sudo apt update
+      #     sudo apt install software-properties-common gcc -y
+      #     sudo add-apt-repository ppa:deadsnakes/ppa -y
+      #     sudo apt install python${{ matrix.python-version }} -y      
               
       - name: "Install dependencies"
         run: |

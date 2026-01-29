@@ -188,12 +188,6 @@ jobs:
           cache: pip
           cache-dependency-path: 'requirements/*.pip'
 
-      # - if: ${{ matrix.arch == 'ppc64le' }}    
-      #   name: "Install Python"
-      #   run: |
-      #     sudo apt update
-      #     sudo apt install -y python3    
-
       # Rust toolchain is not currently installed on windows arm64 images.
       # We need it for nh3, needed by readme-renderer, needed by twine.
       # https://github.com/actions/partner-runner-images/issues/77
