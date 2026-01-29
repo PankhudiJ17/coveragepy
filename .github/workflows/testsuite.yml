@@ -178,23 +178,12 @@ jobs:
         arch:
           - ppc64le
         python-version:
-          # When changing this list, be sure to check the [gh] list in
-          # tox.ini so that tox will run properly. PYVERSIONS
-          # Available versions:
-          # https://github.com/actions/python-versions/blob/main/versions-manifest.json
-          # https://github.com/actions/setup-python/blob/main/docs/advanced-usage.md#available-versions-of-python-and-pypy
           - "3.10"
           - "3.11"
           - "3.12"
           - "3.13"
-          - "3.13t"
           - "3.14"
-          - "3.14t"
-          - "3.15"
-          - "3.15t"
-          - "pypy-3.10"
-          - "pypy-3.11"
-        
+          
       fail-fast: false
 
     steps:
@@ -203,32 +192,21 @@ jobs:
         with:
           persist-credentials: false
       
-      
-      # - uses: actions/checkout@v5
-      # - uses: ibm/setup-pz@v6
-      #   with:
-      #     architecture: ppc64le
-      #     python-version: "${{ matrix.python-version }}"
-      # - run: python my_script.py 
-
       - name: Set up Python
         uses: IBM/setup-python-pz@v6
         with:
           python-version: "${{ matrix.python-version }}"
-          architecture: ppc64le
-
-    #   - uses: ibm/setup-pz@v6
-    # with:
-    #   architecture: ppc64le
-    #   python-version: '3.13'        
+          architecture: ppc64le     
               
       - name: "Install dependencies"
         run: |
           set -xe
           python -m pip install -r requirements/tox.pip
+
       - name: "Run tox for ${{ matrix.python-version }}"
         run: |
           python -m tox -- -rfsEX
+
       - name: "Retry tox for ${{ matrix.python-version }}"
         if: failure()
         run: |
