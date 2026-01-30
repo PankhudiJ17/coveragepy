@@ -157,6 +157,11 @@ jobs:
           python-version: "${{ matrix.python-version }}"
           architecture: ppc64le
 
+      - name: Python (readelf)
+        if: ${{ matrix.os == 'ppc64le' }}
+        run: |
+          readelf -d "$(which python)"
+    
       - name: "Show environment"
         run: |
           set -xe
