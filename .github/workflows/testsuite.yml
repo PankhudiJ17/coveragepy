@@ -157,10 +157,11 @@ jobs:
           python-version: "${{ matrix.python-version }}"
           architecture: ppc64le
 
-      - name: Python (readelf)
-        if: ${{ matrix.os == 'ppc64le' }}
-        run: |
-          readelf -d "$(which python)"
+      # - name: Python (readelf)
+      #   if: ${{ matrix.os == 'ppc64le' }}
+      #   run: |
+      #     ldd "$(which python)"
+      #     readelf -d "$(which python)"
     
       - name: "Show environment"
         run: |
@@ -181,9 +182,17 @@ jobs:
         run: |
           set -xe
           python -m pip install -r requirements/tox.pip
-
+      
+      - name: Python (readelf)
+        if: ${{ matrix.os == 'ppc64le' }}
+        run: |
+          ldd "$(which python)"
+          readelf -d "$(which python)"
+          
       - name: "Run tox for ${{ matrix.python-version }}"
         run: |
+          ldd "$(which python)"
+          readelf -d "$(which python)"
           python -m tox -- -rfsEX
 
       - name: "Retry tox for ${{ matrix.python-version }}"
