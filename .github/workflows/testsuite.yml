@@ -63,7 +63,8 @@ jobs:
 
   tests:
     name: "${{ matrix.python-version }} on ${{ matrix.os }}"
-    runs-on: ${{ matrix.os == 'ppc64le' && 'self-hosted' || (format('{0}-{1}', matrix.os, matrix.os-version))}}
+    #runs-on: ${{ matrix.os == 'ppc64le' && 'self-hosted' || (format('{0}-{1}', matrix.os, matrix.os-version))}}
+    runs-on: "${{ matrix.os }}-${{ matrix.os-version }}"
     timeout-minutes: 15
 
     # Don't run tests if the branch name includes "-notests".
@@ -82,7 +83,7 @@ jobs:
           - ubuntu
           - macos
           - windows
-          - ppc64le
+         # - ppc64le
         os-version:
           - latest
         python-version:
@@ -103,20 +104,25 @@ jobs:
           - "pypy-3.10"
           - "pypy-3.11"
 
-        exclude:
-          - os: ppc64le
-            python-version: "3.13t"
-          - os: ppc64le
-            python-version: "3.14t"
-          - os: ppc64le
+        include:
+          - os: ubuntu
+            python-version: "3.10"
+            os-version: 24.04-ppc64le
+          - os: ubuntu
+            python-version: "3.11"
+            os-version: 24.04-ppc64le
+          - os: ubuntu
+            python-version: "3.12"
+            os-version: 24.04-ppc64le
+          - os: ubuntu
+            python-version: "3.13"
+            os-version: 24.04-ppc64le
+          - os: ubuntu
+            python-version: "3.14"
+          - os: ubuntu
+            os-version: 24.04-ppc64le
             python-version: "3.15"
-          - os: ppc64le
-            python-version: "3.15t"
-          - os: ppc64le
-            python-version: "pypy-3.10"
-          - os: ppc64le
-            python-version: "pypy-3.11"
-        #
+   #
         # If we need to exclude any combinations, do it like this:
         #  exclude:
         #    # Windows pypy 3.9 and 3.10 get stuck with PyPy 7.3.15.
@@ -138,7 +144,7 @@ jobs:
         with:
           persist-credentials: false
 
-      - if: ${{ matrix.os != 'ppc64le' }}
+      - if: ${{ matrix.os-version != '24.04-ppc64le' }}
         name: "Set up Python"
         uses: actions/setup-python@a309ff8b426b58ec0e2a45f0f869d46889d02405 # v6.2.0
         with:
@@ -150,7 +156,7 @@ jobs:
           #cache: pip
           #cache-dependency-path: 'requirements/*.pip'
 
-      - if: ${{ matrix.os == 'ppc64le' }}
+      - if: ${{ matrix.os-version == '24.04-ppc64le' }}
         name: Set up Python (ppc64le)
         uses: IBM/setup-python-pz@4ca38bfac8eac147e9c7aad9ab246f68655afb36
         with:

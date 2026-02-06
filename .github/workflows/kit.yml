@@ -20,10 +20,10 @@ name: "Kits"
 
 on:
   push:
-    branches:
-      # Don't build kits all the time, but do if the branch is about kits.
-      #- "**/*kit*"
-      - ppc_trial_28
+    # branches:
+    #   # Don't build kits all the time, but do if the branch is about kits.
+    #   #- "**/*kit*"
+    #  # - ppc_trial_28
   workflow_dispatch:
   repository_dispatch:
     types:
@@ -49,7 +49,8 @@ concurrency:
 jobs:
   wheels:
     name: "${{ matrix.py }} ${{ matrix.os }} ${{ matrix.arch }} wheels"
-    runs-on: "${{ matrix.arch == 'ppc64le' && matrix.os || (format('{0}-{1}', matrix.os, matrix.os-version || 'latest'))}}"
+    #runs-on: "${{ matrix.arch == 'ppc64le' && matrix.os || (format('{0}-{1}', matrix.os, matrix.os-version || 'latest'))}}"
+    runs-on: "${{ matrix.os }}-${{ matrix.os-version || 'latest' }}"
     env:
       MATRIX_ID: "${{ matrix.py }}-${{ matrix.os }}-${{ matrix.arch }}"
     strategy:
@@ -104,8 +105,6 @@ jobs:
           #                   "arch": the_arch,
           #                   "cipy": cipy,
           #               }
-          #               if the_arch == "ppc64le":
-          #                   them["os"] = "ubuntu-24.04-ppc64le"
           #               if the_os == "macos":
           #                   them["os-version"] = "14"
           #               if the_os == "windows" and the_arch == "ARM64":
@@ -114,6 +113,8 @@ jobs:
           #               if the_arch == "aarch64":
           #                   # https://github.com/pypa/cibuildwheel/issues/2257
           #                   them["os-version"] = "22.04-arm"
+          #                if the_arch == "ppc64le":
+          #                   them["os-version"] = "24.04-ppc64le" 
           #               print(f"- {json.dumps(them)}")
           # ]]]
           - {"os": "ubuntu", "py": "cp310", "arch": "x86_64", "cipy": "3.11"}
@@ -136,11 +137,11 @@ jobs:
           - {"os": "ubuntu", "py": "cp312", "arch": "riscv64", "cipy": "3.11"}
           - {"os": "ubuntu", "py": "cp313", "arch": "riscv64", "cipy": "3.11"}
           - {"os": "ubuntu", "py": "cp314", "arch": "riscv64", "cipy": "3.11"}
-          - {"os": "self-hosted", "py": "cp310", "arch": "ppc64le", "cipy": "3.11"}
-          - {"os": "self-hosted", "py": "cp311", "arch": "ppc64le", "cipy": "3.11"}
-          - {"os": "self-hosted", "py": "cp312", "arch": "ppc64le", "cipy": "3.11"}
-          - {"os": "self-hosted", "py": "cp313", "arch": "ppc64le", "cipy": "3.11"}
-          - {"os": "self-hosted", "py": "cp314", "arch": "ppc64le", "cipy": "3.11"}
+          - {"os": "self-hosted", "py": "cp310", "arch": "ppc64le", "cipy": "3.11", "os-version": "24.04-ppc64le"}
+          - {"os": "self-hosted", "py": "cp311", "arch": "ppc64le", "cipy": "3.11", "os-version": "24.04-ppc64le"}
+          - {"os": "self-hosted", "py": "cp312", "arch": "ppc64le", "cipy": "3.11", "os-version": "24.04-ppc64le"}
+          - {"os": "self-hosted", "py": "cp313", "arch": "ppc64le", "cipy": "3.11", "os-version": "24.04-ppc64le"}
+          - {"os": "self-hosted", "py": "cp314", "arch": "ppc64le", "cipy": "3.11", "os-version": "24.04-ppc64le"}
           - {"os": "macos", "py": "cp310", "arch": "arm64", "cipy": "3.11", "os-version": "14"}
           - {"os": "macos", "py": "cp311", "arch": "arm64", "cipy": "3.11", "os-version": "14"}
           - {"os": "macos", "py": "cp312", "arch": "arm64", "cipy": "3.11", "os-version": "14"}
