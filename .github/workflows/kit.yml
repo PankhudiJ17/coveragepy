@@ -313,4 +313,3 @@ jobs:
           name: signatures
           path: "*.sigstore.json"
           retention-days: 7
-self-hosted
