@@ -62,7 +62,7 @@ jobs:
               - "tests/gold/**"
 
   tests:
-    name: "${{ matrix.python-version }} on ${{ matrix.os }}"
+    name: "${{ matrix.python-version }} on ${{ matrix.os }}-${{ matrix.os-version }}"
     #runs-on: ${{ matrix.os == 'ppc64le' && 'self-hosted' || (format('{0}-{1}', matrix.os, matrix.os-version))}}
     runs-on: "${{ matrix.os }}-${{ matrix.os-version }}"
     timeout-minutes: 15
