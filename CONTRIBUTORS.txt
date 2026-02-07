@@ -187,6 +187,7 @@ Nick Drozd
 Nikita Bloshchanevich
 Nikita Sobolev
 Nils Kattenbeck
+Noah Fatsi
 Noel O'Boyle
 Oleg Höfling
 Oleh Krehel
