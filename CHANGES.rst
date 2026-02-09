@@ -28,7 +28,12 @@ Unreleased
   parent directories is unreadable, a PermissionError would occur, as
   described in `issue 2129`_. This is now fixed.
 
+- Fix: in test suites that change sys.path, coverage.py could fail with
+  "RuntimeError: Set changed size during iteration" as described and fixed in
+  `pull 2130`_. Thanks, Noah Fatsi.
+
 .. _issue 2129: https://github.com/coveragepy/coveragepy/issues/2129
+.. _pull 2130: https://github.com/coveragepy/coveragepy/pull/2130
 
 
 .. start-releases
